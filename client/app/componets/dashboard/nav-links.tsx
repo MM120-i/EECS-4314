@@ -7,8 +7,8 @@ import clsx from 'clsx';
 
 const links = [
     {name:"Home", href:"/dashboard",icon:ChartPieIcon},
-    {name:"Transactions", href:"/transactions",icon:CurrencyDollarIcon},
-    {name:"settings", href:"/settings",icon:Cog8ToothIcon},
+    {name:"Transactions", href:"/dashboard/transactions",icon:CurrencyDollarIcon},
+    {name:"Settings", href:"/dashboard/settings",icon:Cog8ToothIcon},
 ];
 
 export default function NavLinks(){
@@ -22,14 +22,14 @@ export default function NavLinks(){
                 <Link
                     key={link.name}
                     href={link.href}
-                    className={clsx("flex h-[48px] grow items-center justify-center gap-5 rounded-md  p-3 text-md font-medium hover:bg-red-100 hover:text-black-600 md:flex-none md:justify-start md:p-2 md:px-3",
+                    className={clsx("flex py-2.5 px-4 hover:bg-primary rounded-xl space-x-3",
                         {
-                            "bg-red-600 text-white": pathname === link.href,
+                            "bg-primary text-white": pathname === link.href,
                         },                        
                     )}
                 >
-                    <LinkIcon className="w-6"/>
-                    <p className="hidden md:block">{link.name}</p>
+                    <LinkIcon className="w-8"/>
+                    <p className="hidden md:block text-[18px]">{link.name}</p>
                 </Link>
             )
         })}
