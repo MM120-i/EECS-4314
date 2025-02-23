@@ -5,19 +5,12 @@ import NavLinks from "@/app/componets/dashboard/nav-links";
 
 export default function SideNav(){
     return (
-        <div className="flex h-full flex-col px-3 py-4 md:px-2">
-          <Link
-            className="mb-2 flex h-20 items-end justify-start rounded-md bg-blue-600 p-4 md:h-40"
-            href="/"
-          >
-            <div className="w-32 text-white md:w-40">
-              <YuNeedMoneyLogo />
-            </div>
-          </Link>
-          <div className="flex grow flex-row justify-between ml-5 mr-5 space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-            <NavLinks />
-            <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
+        <div className="bg-white text-logo w-80 space-y-10 py-7 px-2">
+          <YuNeedMoneyLogo/>
+          <div className="px-7 space-y-5">
+            <NavLinks/>
           </div>
+          
         </div>
       );
 }
