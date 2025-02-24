@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { DB_URI, NODE_ENV } from "../config/env.js";
+import { DB_URI, NODE_ENV } from "../config/env.js"; // NODE_ENV doesnt exist yet
 import dotenv from "dotenv";
 
 dotenv.config();
