@@ -19,18 +19,14 @@ app.get("/", (req, res) => {
   res.send("Backend is running brooo");
 });
 
-if (!process.env.MONGO_URI) {
-  console.error("MONGO_URI is missing in .env file.");
+if (!process.env.DB_URI) {
+  console.error("DB_URI is missing in .env file.");
   process.exit(1);
 }
 
-// gotta have a env MONGO_URI variable
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB Connected"))
+  .connect(process.env.DB_URI)
+  .then(() => console.log("MongoDB Connected (lfggg)"))
   .catch((err) => {
     console.log("MongoDB connection Error: ", err);
     process.exit(1);
