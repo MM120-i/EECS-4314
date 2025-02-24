@@ -36,7 +36,7 @@ const register = async (req, res, next) => {
     );
 
     const accessToken = jwt.sign({ id: newUser._id }, jwtSecret, {
-      expires: process.env.JWT_EXPIRES_IN,
+      expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
     // commit the transaction
@@ -72,7 +72,7 @@ const register = async (req, res, next) => {
 //=========
 // Login
 //=========
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body; // credentials from the req body
 
@@ -94,7 +94,7 @@ const login = async (req, res) => {
 
     // Generate JWT token
     const accessToken = jwt.sign({ id: user.id }, jwtSecret, {
-      expiersIn: process.env.JWT_EXPIRES_IN,
+      expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
     // send response
