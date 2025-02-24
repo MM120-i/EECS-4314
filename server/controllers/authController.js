@@ -1,8 +1,9 @@
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -121,4 +122,4 @@ const login = async (req, res, next) => {
   }
 };
 
-export default { register, login };
+export { register, login };
