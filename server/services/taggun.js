@@ -33,7 +33,7 @@ const scanReceipt = async (file) => {
     formData.append("refresh", "false");
     formData.append("icognito", "false");
 
-    // API requrest using axios
+    // API request using axios
     const res = await axios.post(baseUrl, formData, {
       headers: {
         ...formData.getHeaders(),
