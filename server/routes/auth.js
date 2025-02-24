@@ -1,6 +1,6 @@
 import express from "express";
-const authenticateToken = require("../middleware/jwt.js");
-const { login, register } = require("../controllers/authController/js");
+import authenticateToken from "../middleware/jwt.js";
+import { login, register } from "../controllers/authController/js";
 
 const router = express.Router();
 

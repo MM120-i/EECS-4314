@@ -1,6 +1,6 @@
-const axios = require("axios");
-const FormData = require("form-data");
-const fs = require("fs");
+import axios from "axios";
+import FormData from "form-data";
+import fs from "fs";
 
 require("dotenv").config();
 

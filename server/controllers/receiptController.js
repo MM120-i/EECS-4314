@@ -1,5 +1,5 @@
-const { scanReceipt } = require("../services/taggun");
-const Transaction = require("../models/Transaction");
+import { scanReceipt } from "../services/taggun";
+import Transaction from "../models/Transaction";
 
 const processReceipt = async (req, res) => {
   try {
