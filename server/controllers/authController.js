@@ -121,4 +121,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+export default { register, login };

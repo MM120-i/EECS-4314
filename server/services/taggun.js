@@ -49,4 +49,4 @@ const scanReceipt = async (file) => {
   }
 };
 
-module.exports = scanReceipt;
+export default scanReceipt;

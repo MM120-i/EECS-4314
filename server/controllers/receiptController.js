@@ -63,4 +63,4 @@ const createReceiptTransaction = async (req, res) => {
   }
 };
 
-module.exports = { processReceipt, createReceiptTransaction };
+export default { processReceipt, createReceiptTransaction };
