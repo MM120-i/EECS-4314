@@ -2,15 +2,15 @@ import clsx from "clsx";
 
 export default function TransactionCategory({category} : {category: string}){
     return(
-        <span className={clsx(`rounded-full px-2 py-1 text-xs text-white`,
+        <span className={clsx(`rounded-full px-2 py-1 text-xs`,
             {
-                "bg-red" : category === 'red',
-                "bg-orange": category === "orange",
+                "bg-red text-white" : category === 'red',
+                "bg-orange text-white": category === "orange",
                 "bg-yellow text-black": category === "yellow",
-                "bg-green": category === "green",
-                "bg-blue": category === "blue",
-                "bg-indigo": category === "indigo",
-                "bg-violet": category === "violet",
+                "bg-green text-white": category === "green",
+                "bg-blue text-white": category === "blue",
+                "bg-indigo text-white": category === "indigo",
+                "bg-violet text-white": category === "violet",
             },
         )}>
             {category}

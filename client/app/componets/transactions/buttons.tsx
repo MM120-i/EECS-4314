@@ -1,11 +1,17 @@
-import { TrashIcon,EyeIcon } from "@heroicons/react/24/outline"
-import { PencilIcon } from "@heroicons/react/24/solid"
+import { TrashIcon,EyeIcon, PlusIcon, PencilIcon } from "@heroicons/react/24/outline"
 import Link from "next/link"
 
 export function AddTransnaction() {
     return (
-        <></>
-        // TODO
+        <Link
+            href="/dashboard/transactions/add"
+            className="flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-white"
+        >
+            <span className="hidden md:block">
+                Add Transaction
+            </span>
+            <PlusIcon className="h-5 md:ml-5"/>
+        </Link>
     )
 }
 

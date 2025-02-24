@@ -2,6 +2,15 @@
   "app": {
     "[project]/app/page": [
       "static/media/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk-s.p.dd0b3887.woff2"
+    ],
+    "[project]/app/dashboard/page": [
+      "static/media/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk-s.p.dd0b3887.woff2"
+    ],
+    "[project]/app/dashboard/transactions/page": [
+      "static/media/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk-s.p.dd0b3887.woff2"
+    ],
+    "[project]/app/dashboard/settings/page": [
+      "static/media/pxiByp8kv8JHgFVrLEj6Z1xlFd2JQEk-s.p.dd0b3887.woff2"
     ]
   },
   "appUsingSizeAdjust": true,
