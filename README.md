@@ -35,7 +35,7 @@ YUNeedMoney is a **finance management web application** designed to help users *
 
 ---
 
-## 🛠 **Getting Started**
+## **Getting Started**
 ### **1️. Clone the Repository**
 ```sh
 git clone https://github.com/MM120-i/EECS-4314.git
