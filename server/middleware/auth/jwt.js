@@ -36,7 +36,7 @@ const authenticateToken = (req, res, next) => {
       return res.status(401).json({ message: "Invalid token" });
     }
 
-    console.error("JWT Authentication Error:", error);
+    console.error("JWT Authentication Error:", err);
     return res.status(500).json({
       message: "Server error during authentication",
     });
