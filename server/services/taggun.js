@@ -1,8 +1,8 @@
 import axios from "axios";
 import FormData from "form-data";
 import fs from "fs";
-
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
 const apiKey = process.env.TAGGUN_API_KEY;
 const baseUrl = "https://api.taggun.io/api/receipt/v1/verbose/file";
@@ -16,8 +16,10 @@ if (!apiKey) {
 
 const scanReceipt = async (file) => {
   try {
+    if (!apiKey) {
+      throw new Error("Taggun API key is not configured");
+    }
     const formData = new FormData();
-    const apiKey = process.env.TAGGUN_API_KEY;
 
     // Adding receipt to form data
     if (file.path) {
@@ -31,13 +33,13 @@ const scanReceipt = async (file) => {
     // Parameters from Taggun's documentation
     formData.append("extractLineItems", "true");
     formData.append("refresh", "false");
-    formData.append("icognito", "false");
+    formData.append("incognito", "false");
 
     // API request using axios
     const res = await axios.post(baseUrl, formData, {
       headers: {
         ...formData.getHeaders(),
-        apiKey: apiKey,
+        apikey: apiKey,
         accept: "application/json",
       },
     });
@@ -46,6 +48,7 @@ const scanReceipt = async (file) => {
     return res.data;
   } catch (err) {
     console.error("Error scanning receipt: " + err.message);
+    throw err;
   }
 };
 

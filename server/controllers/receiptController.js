@@ -1,5 +1,5 @@
-import { scanReceipt } from "../services/taggun";
-import Transaction from "../models/Transaction";
+import scanReceipt from "../services/taggun.js";
+import Transaction from "../models/Transaction.js";
 
 const processReceipt = async (req, res) => {
   try {
@@ -18,7 +18,9 @@ const processReceipt = async (req, res) => {
     });
   } catch (err) {
     console.error("Receipt processing error:", err);
-    res.status(500).json({ message: "Error processing receipt", error: err });
+    res
+      .status(500)
+      .json({ message: "Error processing receipt", error: err.messsage });
   }
 };
 
@@ -31,14 +33,13 @@ const createReceiptTransaction = async (req, res) => {
     }
 
     // get user id
-    const userId = req.user.id;
+    // const userId = req.user.id;
 
     // Calling Taggun API
     const receiptData = await scanReceipt(req.file);
 
     // Extracting data from Taggun response
     const transaction = new Transaction({
-      userId,
       type: "expense", // default to expense
       amount: receiptData.totalAmount?.data,
       category: req.body.category || "Uncategorized",
