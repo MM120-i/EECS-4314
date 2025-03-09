@@ -123,4 +123,3 @@ const login = async (req, res, next) => {
 };
 
 export { register, login };
-export { register, login };
