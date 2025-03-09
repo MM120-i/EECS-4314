@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const errorHandler = (error, req, res, next) => {
   console.error("Error", error);
 

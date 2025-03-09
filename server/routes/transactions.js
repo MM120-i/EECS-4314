@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
 dotenv.config();
+
 const router = express.Router();
 
 // For now we have a auth middleware to verify the token
