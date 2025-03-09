@@ -12,24 +12,17 @@ export default function Page() {
       </div>
 
       <p className={`${poppins.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-        <strong>Welcome to YUNeedMoney.</strong>
+        <strong>Log in to your account</strong>
       </p>
 
       <div>
         <Link
           href="/login"
-          className="flex items-center mt-10 gap-5 rounded-lg bg-primary px-10 py-3 text-sm font-medium text-white"
+          className="flex items-center justify-center mt-5 gap-5 rounded-lg bg-primary px-10 py-3 text-sm font-medium text-white"
         >
           <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
         </Link>
-        <Link
-          href="/Signup"
-          className="flex items-center mt-2 gap-5 rounded-lg bg-blue px-10 py-3 text-sm font-medium text-white"
-        >
-          <span>Signup</span> <ArrowRightIcon className="w-5 md:w-6" />
-        </Link>
       </div>
-
 
     </main>
   );
