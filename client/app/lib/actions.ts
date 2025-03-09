@@ -2,6 +2,7 @@
 
 import { signIn } from "@/auth";
 import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 import { env } from "process";
 
 export async function authenticate(
@@ -16,13 +17,14 @@ export async function authenticate(
           case 'CredentialsSignin':
             return 'Invalid credentials.';
           default:
-            return 'Something went wrong.';
+            return error.message;
         }
       }
       throw error;
     }
   }
 
+ //create user
   export async function register(
       prevState: string | undefined,
       formData: FormData,
@@ -32,15 +34,12 @@ export async function authenticate(
     email:formData.get('email'),
     password:formData.get('password'),
     }
-
-    //create user 
     try{
       const res = await fetch(`${env.BACKEND_URL}/register`, {
         method: 'POST',
         body: JSON.stringify(credentials),
         headers: { "Content-Type": "application/json" }
       })
-      console.log(res,JSON.stringify(credentials))
       const user = res.json()
       
     } catch (error) {
@@ -49,9 +48,28 @@ export async function authenticate(
           case 'CredentialsSignin':
             return 'Invalid credentials.';
           default:
-            return 'Something went wrong.';
+            return error.message;
         }
       }
       throw error;
     }
+    redirect('/dashboard')
   }
+
+  // useEffect(() => {
+
+  //   setData(result);
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/lib/mockdata");
+  //       const result: Record<string, SpendCategory> = mockdata;
+        
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+  
+  // setData(mockdata);

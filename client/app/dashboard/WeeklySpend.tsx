@@ -1,5 +1,8 @@
 'use client';
 import React, { useState, useEffect } from "react";
+import mockdata from '@/app/lib/mockdata.json'
+
+
 
 type SpendCategory = {
   amount: string;
@@ -10,7 +13,8 @@ type SpendCategory = {
 };
 
 const WeeklySpend = () => {
-  const [data, setData] = useState<Record<string, SpendCategory>>({});
+  const mockdata = require("@/app/lib/mockdata.json")
+  const [data, setData] = useState<Record<string, SpendCategory>>(mockdata);
 
   // Define hardcoded data for labels, colors, and boxes
   const categories = [
@@ -20,19 +24,7 @@ const WeeklySpend = () => {
     { id: "entertainment", label: "On Entertainment", bgColor: "bg-purple-100" },
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/mockdata.json");
-        const result: Record<string, SpendCategory> = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg">

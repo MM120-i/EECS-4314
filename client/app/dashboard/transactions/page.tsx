@@ -1,6 +1,6 @@
 import { poppins } from "@/app/componets/fonts";
 import { AddTransnaction } from "@/app/componets/transactions/buttons";
-import Table from '@/app/componets/transactions/table';
+import Table from '@/app/componets/transactions/transaction-table';
 
 export default function Page() {
     return (

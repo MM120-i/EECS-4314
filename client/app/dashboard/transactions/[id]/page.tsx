@@ -1,10 +1,14 @@
-export default async function Page(props: {params: Promise<{id: string}>}){
+import DragNDrop from "@/app/componets/transactions/drag-drop";
+import TransactionsTable from "@/app/componets/transactions/transaction-table";
+
+export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
     const id = params.id;
-    return(
+    return (
         <div>
             this is {id};
-            {/* TODO fetch transaction by id */}
+            <DragNDrop/>
+            <TransactionsTable/>
         </div>
     )
 }
