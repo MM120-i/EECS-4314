@@ -1,6 +1,7 @@
 import { poppins } from "../componets/fonts";
 import WeeklySpend from "./WeeklySpend";
 import SavingsAccount from "./SavingsAccount";
+import TransactionCategory from "../componets/transactions/category";
 
 
 export default function Page() {
@@ -22,6 +23,7 @@ export default function Page() {
                 </div>
                 <div>
                     <SavingsAccount />
+                    <TransactionCategory category={"orange"}/>
                 </div>
             </div>
         </main>
