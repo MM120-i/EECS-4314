@@ -1,5 +1,5 @@
 import express from "express";
-import authenticateToken from "../middleware/auth/jwt.js";
+import authenticateToken from "../middleware/auth/jwt.js"; // unused rn
 import { login, register } from "../controllers/authController.js";
 
 const router = express.Router();

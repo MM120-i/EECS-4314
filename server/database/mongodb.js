@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { DB_URI, NODE_ENV } from "../config/env.js"; // NODE_ENV doesnt exist yet
+import { DB_URI } from "../config/env.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -13,7 +13,6 @@ if (!DB_URI) {
 const connectToDatabase = async () => {
   try {
     await mongoose.connect(DB_URI);
-    console.log(`Connected to database in ${NODE_ENV} mode`);
   } catch (error) {
     console.error("Error connecting to database: ", error);
     process.exit(1);

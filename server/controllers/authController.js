@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET;
@@ -70,6 +71,7 @@ const register = async (req, res, next) => {
     next(err); // send it to the error handler in middleware/errorHandler.js
   }
 };
+
 //=========
 // Login
 //=========
@@ -79,6 +81,7 @@ const login = async (req, res, next) => {
 
     // check if the user exists
     const user = await User.findOne({ email }); // find the user based on the email
+
     if (!user) {
       const err = new Error("User not found");
       err.statusCode = 404;
@@ -87,6 +90,7 @@ const login = async (req, res, next) => {
 
     // verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
+
     if (!isPasswordValid) {
       const err = new Error("Invalid email or password");
       err.statusCode = 401;
