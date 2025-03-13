@@ -1,9 +1,8 @@
-import { receipts } from "@/app/lib/placeholder-data"
 // import TransactionCategory from "@/app/componets/receipts/category"
 import { DeleteTransaction, EditTransaction, ViewTransaction } from "@/app/componets/transactions/buttons"
 
 export default async function ReceiptsTable() {
-    // const receipts = ; get data from DB later
+    const receipts = undefined;
 
     return (
         <div className="mt-6 flow-root">
@@ -45,10 +44,7 @@ export default async function ReceiptsTable() {
                                     Date
                                 </th>
                                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                                    Description
-                                </th>
-                                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                                    Category
+                                    Item Description
                                 </th>
                                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                                     Amount

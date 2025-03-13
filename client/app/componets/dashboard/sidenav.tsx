@@ -1,13 +1,12 @@
+import { logOut } from "@/app/auth/actions";
 import YuNeedMoneyLogo from "@/app/componets/YuneedMoney-logo";
 import NavLinks from "@/app/componets/dashboard/nav-links";
-import { signOut } from "@/auth";
 import { PowerIcon } from "@heroicons/react/24/outline";
 
 
 export default function SideNav() {
   return (
     <div className="bg-white text-logo w-full md:w-80 space-y-10 py-7 px-2 md:sticky md:h-full md:top-0">
-    <YuNeedMoneyLogo/>
     <div className="md:px-7 space-y-5">
       <NavLinks/>
       <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
@@ -15,7 +14,7 @@ export default function SideNav() {
       <form
           action={async () => {
             'use server';
-            await signOut({ redirectTo: '/' });
+            await logOut();
           }}
         >
           <button className="flex space-x-3">

@@ -45,6 +45,9 @@ const register = async (req, res, next) => {
     await session.commitTransaction();
     session.endSession();
 
+    //set cookie 
+    res.cookie('token',accessToken,{httpOnly:true})
+
     // send response
     res.status(201).json({
       status: "success",
@@ -61,7 +64,6 @@ const register = async (req, res, next) => {
   } catch (err) {
     await session.abortTransaction();
     session.endSession();
-
     // log unexpected errors
     if (!err.statusCode) {
       console.error("Registration error: ", err);
@@ -69,6 +71,7 @@ const register = async (req, res, next) => {
       err.message = "internal server error";
     }
     next(err); // send it to the error handler in middleware/errorHandler.js
+
   }
 };
 
@@ -98,9 +101,12 @@ const login = async (req, res, next) => {
     }
 
     // Generate JWT token
-    const accessToken = jwt.sign({ id: user.id }, jwtSecret, {
+    const accessToken = jwt.sign({ id: user.id, name: user.name}, jwtSecret, {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
+
+    //set cookie 
+    res.cookie('token',accessToken,{httpOnly:true})
 
     // send response
     res.status(200).json({
@@ -126,4 +132,36 @@ const login = async (req, res, next) => {
   }
 };
 
-export { register, login };
+//=========
+// verify-token
+//=========
+const verifyToken = async (req,res,next) => { 
+  try{
+    //check if token is provided 
+    const authorization = req.get('Authorization')
+    if(!authorization && !authorization?.split(' ')[1] ){
+      return res.status(404).json({
+        message:"Error: please provide a valid token"
+      })
+    }
+    const token = authorization?.split(' ')[1]
+
+    //check if token is valid 
+    return jwt.verify(token,jwtSecret,(error,user) => {
+      if (error) return res.status(403).json({
+        message:"Error: invalid token"
+      })
+      return res.status(200).json({
+        message:"Successfully, verified token",
+        token: token, 
+        user: user
+      })
+    })
+  }catch(error){
+    return res.status(500).json({
+      message:"Error: Internal Server Error"
+    })
+  }
+}
+
+export { register, login, verifyToken};

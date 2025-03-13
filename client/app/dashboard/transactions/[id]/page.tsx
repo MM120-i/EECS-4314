@@ -1,5 +1,6 @@
 import DragNDrop from "@/app/componets/transactions/drag-drop";
-import TransactionsTable from "@/app/componets/transactions/transaction-table";
+import ReceiptsTable from "@/app/componets/transactions/receipts-table";
+
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -8,7 +9,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         <div>
             this is {id};
             <DragNDrop/>
-            <TransactionsTable/>
+            <ReceiptsTable/>
         </div>
     )
 }
