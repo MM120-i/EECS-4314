@@ -15,6 +15,7 @@ const TransactionSchema = new mongoose.Schema({
   merchant: { type: String },
   merchantAddress: { type: String },
   tax: { type: Number },
+  items: { type: Array, required: false },
 });
 
 export default mongoose.model("Transaction", TransactionSchema);

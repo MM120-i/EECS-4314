@@ -29,7 +29,9 @@ const createReceiptTransaction = async (req, res) => {
   try {
     // If the file was uploaded
     if (!req.file) {
-      return res.status(400).json({ message: "No receipt image provided" });
+      return res
+        .status(400)
+        .json({ status: "Error", message: "No receipt image provided" });
     }
 
     // get user id
@@ -47,17 +49,34 @@ const createReceiptTransaction = async (req, res) => {
       data: receiptData.date?.data,
       merchantName: receiptData.merchantName?.data,
       merchantAddress: receiptData.merchantAddress?.data,
+      items:
+        receiptData.amounts
+          ?.filter(
+            (item) =>
+              item.index <
+              receiptData.amounts.findIndex((a) =>
+                a.text?.toLowerCase().includes("subtotal")
+              )
+          )
+          .map((item) => ({
+            name: item.text,
+            price: item.data,
+            quantity: 1,
+            totalPrice: item.data,
+          })) || [],
     });
 
     await transaction.save();
 
     res.status(201).json({
+      status: "Success",
       message: "Transaction created successfully",
       data: transaction,
     });
   } catch (err) {
     console.error("Receipt transaction creation error:", err);
     res.status(500).json({
+      status: "Error",
       message: "Failed to create transaction from receipt",
       error: err.message,
     });
