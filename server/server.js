@@ -9,6 +9,8 @@ import receiptRoutes from "./routes/receipt.js";
 import userRoutes from "./routes/user.js";
 //middleware
 import authenticateToken from "./middleware/auth/jwt.js";
+// Error handler
+import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
 
@@ -31,12 +33,18 @@ if (!process.env.DB_URI) {
   process.exit(1);
 }
 
-mongoose
-  .connect(process.env.DB_URI)
-  .then(() => console.log("MongoDB Connected (lfggg)"))
-  .catch((err) => {
-    console.log("MongoDB connection Error: ", err);
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.DB_URI);
+    console.log("MongoDB Connected (lfggg)");
+  } catch (err) {
+    console.error("MongoDB Connection Error: 🥺 ", err);
     process.exit(1);
-  });
+  }
+};
+
+connectDB();
+
+app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
