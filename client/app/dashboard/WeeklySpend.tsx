@@ -24,11 +24,9 @@ const WeeklySpend = () => {
     { id: "entertainment", label: "On Entertainment", bgColor: "bg-purple-100" },
   ];
 
-  
-
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg">
-      <div className="flex justify-between items-center">
+    <div className="p-6 bg-white shadow-md rounded-lg h-[400px] w-[950px]" >
+      <div className="mt-6 ml-5 flex justify-between items-center">
         <div>
           <h2 className="text-xl font-bold text-gray-800">Weekly Spend</h2>
           <p className="text-gray-500 text-sm">Weekly Summary</p>
@@ -38,7 +36,7 @@ const WeeklySpend = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mt-4">
+      <div className="ml-5 mr-5 grid grid-cols-4 gap-4 mt-4">
         {categories.map((category) => {
           const item = data[category.id];
           if (!item) return null;
