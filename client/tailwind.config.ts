@@ -11,10 +11,10 @@ export default {
       colors: {
         primary:"#CE2225",
         logo:"#151D48",
-        red:"#bc1c2b",
+        customred:"#bc1c2b",
         orange:"#FFA500",
-        yellow:"#FFFF00",
-        green:"#008000",
+        customyellow:"#FFFF00",
+        customgreen:"#008000",
         blue:"#0000FF",
         indigo:"#4B0082",
         violet:"#EE82EE",
