@@ -2,9 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+// routes
 import authRoutes from "./routes/auth.js";
 import transactionRoutes from "./routes/transactions.js";
 import receiptRoutes from "./routes/receipt.js";
+import userRoutes from "./routes/user.js";
+//middleware
+import authenticateToken from "./middleware/auth/jwt.js";
 
 dotenv.config();
 
@@ -15,7 +19,8 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/receipt", receiptRoutes);
+app.use("/api/receipt", authenticateToken, receiptRoutes);
+app.use("/api/user", authenticateToken, userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running brooo");

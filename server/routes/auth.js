@@ -1,10 +1,10 @@
-import express, { application } from "express";
+import express from "express";
 import authenticateToken from "../middleware/auth/jwt.js"; // unused rn
 import { login, register, verifyToken } from "../controllers/authController.js";
 import errorHandler from "../middleware/errorHandler.js";
 
 const router = express.Router();
- 
+
 // login route
 router.post("/login", login);
 
@@ -12,8 +12,8 @@ router.post("/login", login);
 router.post("/register", register);
 
 //verify-token route
-router.post("/verify-token", verifyToken)
+router.post("/verify-token", verifyToken);
 
-router.use(errorHandler)
+router.use(errorHandler);
 
 export default router;
