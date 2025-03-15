@@ -22,7 +22,7 @@ app.use(express.json());
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/receipt", authenticateToken, receiptRoutes);
-app.use("/api/user", authenticateToken, userRoutes);
+app.use("/api", authenticateToken, userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running brooo");
