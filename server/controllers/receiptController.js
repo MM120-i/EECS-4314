@@ -1,5 +1,10 @@
+// Functions
 import scanReceipt from "../services/taggun.js";
 import Transaction from "../models/Transaction.js";
+
+import { categorizeTransaction } from "../services/openai.js";
+
+// Models
 import User from "../models/User.js";
 
 const processReceipt = async (req, res) => {
@@ -48,7 +53,7 @@ const createReceiptTransaction = async (req, res) => {
     // console.log(JSON.stringify(receiptData, null, 2));
 
     // Extracting data from Taggun response
-    const transaction = new Transaction({
+    const transactionData = new Transaction({
       userId: userId,
       type: "expense", // default to expense
       amount: receiptData.totalAmount?.data,
@@ -73,6 +78,24 @@ const createReceiptTransaction = async (req, res) => {
             totalPrice: item.data,
           })) || [],
     });
+
+    // ok so now we can actually use this ai thing to categorize the transaction ykwim or no?
+    const categoryBasedOnAi = await categorizeTransaction(transactionData);
+
+    // ok now we can save the transaction and hope it works properly
+    const transaction = new Transaction({
+      userId: userId,
+      type: "expense",
+      amount: transactionData.amount,
+      category: categoryBasedOnAi, // Use the AI-determined category
+      tax: transactionData.tax,
+      date: transactionData.date,
+      merchantName: transactionData.merchantName,
+      merchantAddress: transactionData.merchantAddress,
+      items: transactionData.items,
+    });
+
+    // and BOOM this shi works I think
 
     const savedTransaction = await transaction.save();
     console.log("Saved transaction:", savedTransaction.userId);
