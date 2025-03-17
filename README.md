@@ -28,7 +28,8 @@ YUNeedMoney is a **finance management web application** designed to help users *
 - **MongoDB (Mongoose)** – Database  
 - **JWT** – Secure user authentication  
 - **Plaid API** – Dummy banking integration  
-- **Taggun API** – Receipt scanning  
+- **Taggun API** – Receipt scanning
+- **Open API**
 
 ### **Deployment & Hosting**
 - **AWS (EC2 & RDS)** – Cloud deployment  
