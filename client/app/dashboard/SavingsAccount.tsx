@@ -1,15 +1,16 @@
 import React from "react";
 
 const SavingsAccount = () => {
-  let savings: number | string = 5000; // hard coded for now
+  let savings: number | string = "5245"; // hard coded for now
   const brokeLimit = 5001;
 
   const broke = () => {
-    if (typeof savings !== "number" || isNaN(savings) || savings < 0) {
-      return null;
-    }
-
-    if (savings >= brokeLimit) {
+    if (
+      typeof savings !== "number" ||
+      isNaN(savings) ||
+      savings < 0 ||
+      savings >= brokeLimit
+    ) {
       return null;
     }
 
