@@ -23,7 +23,7 @@ const CATEGORIES = [
 
 // Using OpenAI to categorize an entire Transaction (receipt)
 
-export const categorizeTransaction = async (transactionData) => {
+const categorizeTransaction = async (transactionData) => {
   try {
     // Get the data from the transaction to send to openai
     const { merchantName, items, amount } = transactionData;
@@ -63,7 +63,7 @@ export const categorizeTransaction = async (transactionData) => {
 
     // to actally get the category
 
-    // alright so listen. This is how the response is structured listen up and watch and listen:
+    // alright so listen. This is how the response is structured listen up and watch:
     // {id, object, created, model, choiced [{index, message: {role, content}}]}
     // theres more but like we only care about content
     const predictedCategory = completion.choices[0].message.content.trim();
@@ -87,3 +87,5 @@ export const categorizeTransaction = async (transactionData) => {
 // });
 
 // // completion.then((result) => console.log(result.choices[0].message));
+
+export default categorizeTransaction;
