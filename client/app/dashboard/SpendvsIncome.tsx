@@ -22,6 +22,7 @@ ChartJS.register(
   Legend
 );
 
+// TODO: Need to get real data
 const SpendvsIncome = () => {
   const data = {
     //chart data
@@ -40,6 +41,7 @@ const SpendvsIncome = () => {
     ],
   };
 
+  // TODO: Need to get real data
   const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,

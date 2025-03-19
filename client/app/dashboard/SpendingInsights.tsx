@@ -28,18 +28,21 @@ const SpendvsIncome = () => {
     labels: ["January", "February", "March", "April", "May"], // x-axis labels
     datasets: [
       {
+        // TODO: Need to get real data
         label: "Entertainment",
         data: [150, 400, 450, 500, 250], // MOCK DATA
         borderColor: "rgba(167, 0, 255, 1)",
         tension: 0.5,
       },
       {
+        // TODO: Need to get real data
         label: "Rent",
         data: [550, 400, 550, 450, 500], // MOCK DATA
         borderColor: "rgba(239, 68, 68, 1)",
         tension: 0.5,
       },
       {
+        // TODO: Need to get real data
         label: "Groceries",
         data: [350, 500, 300, 400, 350], // MOCK DATA
         borderColor: "rgba(60, 216, 86, 1)",
@@ -48,6 +51,7 @@ const SpendvsIncome = () => {
     ],
   };
 
+  // TODO: Need to get real data
   const options: ChartOptions<"line"> = {
     responsive: true,
     plugins: {

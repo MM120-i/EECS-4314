@@ -14,6 +14,7 @@ const WeeklySpend = () => {
   const mockdata = require("@/app/lib/mockdata.json");
   const [data, setData] = useState<Record<string, SpendCategory>>(mockdata);
 
+  // TODO: Need to get real data
   // Define hardcoded data for labels, colors, and boxes
   const categories = [
     { id: "totalSpent", label: "Total Spent", bgColor: "bg-red-100" },
