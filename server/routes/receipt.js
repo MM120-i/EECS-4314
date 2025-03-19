@@ -51,4 +51,6 @@ router.post(
   receiptController.createReceiptTransaction
 );
 
+router.post("/forceReceipt", receiptController.manualReceiptMaker);
+
 export default router;
