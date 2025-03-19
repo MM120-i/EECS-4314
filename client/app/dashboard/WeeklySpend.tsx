@@ -1,8 +1,6 @@
-'use client';
+"use client";
+
 import React, { useState, useEffect } from "react";
-import mockdata from '@/app/lib/mockdata.json'
-
-
 
 type SpendCategory = {
   amount: string;
@@ -13,7 +11,7 @@ type SpendCategory = {
 };
 
 const WeeklySpend = () => {
-  const mockdata = require("@/app/lib/mockdata.json")
+  const mockdata = require("@/app/lib/mockdata.json");
   const [data, setData] = useState<Record<string, SpendCategory>>(mockdata);
 
   // Define hardcoded data for labels, colors, and boxes
@@ -21,12 +19,18 @@ const WeeklySpend = () => {
     { id: "totalSpent", label: "Total Spent", bgColor: "bg-red-100" },
     { id: "groceries", label: "On Groceries", bgColor: "bg-yellow-100" },
     { id: "eatingOut", label: "Times Eaten Out", bgColor: "bg-green-100" },
-    { id: "entertainment", label: "On Entertainment", bgColor: "bg-purple-100" },
+    {
+      id: "entertainment",
+      label: "On Entertainment",
+      bgColor: "bg-purple-100",
+    },
   ];
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg h-[400px] w-[950px]" >
-      <div className="mt-6 ml-5 flex justify-between items-center">
+    // Container uses full width but limits maximum size for consistency
+    <div className="p-6 bg-white shadow-md rounded-lg h-[365px] w-full max-w-[950px]">
+      {/* Header Section */}
+      <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-xl font-bold text-gray-800">Weekly Spend</h2>
           <p className="text-gray-500 text-sm">Weekly Summary</p>
@@ -35,11 +39,14 @@ const WeeklySpend = () => {
           Export
         </button>
       </div>
-
-      <div className="ml-5 mr-5 grid grid-cols-4 gap-4 mt-4">
+      {/* Grid of Category Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {categories.map((category) => {
           const item = data[category.id];
-          if (!item) return null;
+
+          if (!item) {
+            return null;
+          }
 
           return (
             <div
