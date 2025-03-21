@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.js";
 import transactionRoutes from "./routes/transactions.js";
 import receiptRoutes from "./routes/receipt.js";
 import userRoutes from "./routes/user.js";
+import plaidRoutes from "./routes/plaid.js";
 //middleware
 import authenticateToken from "./middleware/auth/jwt.js";
 // Error handler
@@ -23,6 +24,7 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/receipt", authenticateToken, receiptRoutes);
 app.use("/api/user", authenticateToken, userRoutes);
+app.use("/api/plaid", plaidRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running brooo");
