@@ -1,6 +1,10 @@
-import scanReceipt from "../services/taggun.js";
+// Models
 import Transaction from "../models/Transaction.js";
 import User from "../models/User.js";
+// Functions
+import scanReceipt from "../services/taggun.js";
+import categorizeTransaction from "../services/openai.js";
+import geocodeAddress from "../services/geocoding.js";
 
 const processReceipt = async (req, res) => {
   try {
@@ -48,7 +52,7 @@ const createReceiptTransaction = async (req, res) => {
     // console.log(JSON.stringify(receiptData, null, 2));
 
     // Extracting data from Taggun response
-    const transaction = new Transaction({
+    const transactionData = {
       userId: userId,
       type: "expense", // default to expense
       amount: receiptData.totalAmount?.data,
@@ -72,7 +76,38 @@ const createReceiptTransaction = async (req, res) => {
             quantity: 1,
             totalPrice: item.data,
           })) || [],
+    };
+
+    // ok so now we can actually use this ai thing to categorize the transaction ykwim or no?
+    const categoryBasedOnAi = await categorizeTransaction(transactionData);
+
+    // Alright and now we need to get the geolocation thing to work too
+    if (transactionData.merchantAddress) {
+      const coordinates = await geocodeAddress(transactionData.merchantAddress);
+      // if we do end up getting the coordinates, we can just set them
+      if (coordinates) {
+        transactionData.location = {
+          type: "Point",
+          coordinates: [coordinates.longitude, coordinates.latitude],
+        };
+      }
+    }
+
+    // ok now we can save the transaction and hope it works properly
+    const transaction = new Transaction({
+      userId: userId,
+      type: "expense",
+      amount: transactionData.amount,
+      category: categoryBasedOnAi, // Use the AI-determined category
+      tax: transactionData.tax,
+      date: transactionData.date,
+      merchantName: transactionData.merchantName,
+      merchantAddress: transactionData.merchantAddress,
+      items: transactionData.items,
+      location: transactionData.location, // Set the location if available (lon/lat)
     });
+
+    // and BOOM this shi works I think
 
     const savedTransaction = await transaction.save();
     console.log("Saved transaction:", savedTransaction.userId);
@@ -97,10 +132,61 @@ const createReceiptTransaction = async (req, res) => {
   }
 };
 
+const manualReceiptMaker = async (req, res) => {
+  try {
+    const receiptData = req.body;
+
+    const userId = req.user?.id || req.query.userId;
+
+    const transaction = new Transaction({
+      userId: userId,
+      type: "expense",
+      amount: receiptData.amount,
+      category: receiptData.category || "Uncategorized",
+      tax: receiptData.tax,
+      date: receiptData.date,
+      merchantAddress: receiptData.merchantAddress,
+      location: {
+        type: "Point",
+        coordinates: [
+          receiptData.location.coordinates[0],
+          receiptData.location.coordinates[1],
+        ],
+      },
+      items: receiptData.items.map((item) => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        totalPrice: item.price * item.quantity,
+      })),
+    });
+
+    const savedTransaction = await transaction.save();
+    console.log("Saved transaction:", savedTransaction.userId);
+
+    // Also need to add the transaction to the user object
+    await User.findByIdAndUpdate(userId, {
+      $push: { transactions: savedTransaction._id },
+    });
+
+    return res.status(201).json({
+      status: "Success",
+      data: savedTransaction,
+    });
+  } catch (err) {
+    console.error("Error creating manual transaction:", err);
+    return res.status(500).json({
+      status: "Error",
+      message: "Failed to create transaction from receipt",
+      error: err.message,
+    });
+  }
+};
+
 function cleanItemNames(item) {
   if (!item) return "";
 
   return item.split(/\s+\d{6,}|\s+[A-Z]\s+\d+\.\d+/)[0].trim();
 }
 
-export default { processReceipt, createReceiptTransaction };
+export default { processReceipt, createReceiptTransaction, manualReceiptMaker };

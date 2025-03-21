@@ -3,7 +3,6 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import receiptController from "../controllers/receiptController.js";
-import authenticateToken from "../middleware/auth/jwt.js";
 
 const router = express.Router();
 
@@ -51,5 +50,7 @@ router.post(
   upload.single("receipt"),
   receiptController.createReceiptTransaction
 );
+
+router.post("/forceReceipt", receiptController.manualReceiptMaker);
 
 export default router;

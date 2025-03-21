@@ -8,7 +8,7 @@ const apiKey = process.env.TAGGUN_API_KEY;
 const baseUrl = "https://api.taggun.io/api/receipt/v1/verbose/file";
 
 if (!apiKey) {
-  console.warn("No Taggun API key");
+  console.warn("Wtf No Taggun API key");
 }
 
 // Return extracted data from a scanned receipt

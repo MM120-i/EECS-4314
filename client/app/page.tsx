@@ -1,4 +1,3 @@
-import Image from "next/image";
 import YuNeedMoneyLogo from "./componets/YuneedMoney-logo";
 import { poppins } from "./componets/fonts";
 import Link from "next/link";
@@ -8,10 +7,12 @@ export default function Page() {
   return (
     <main className="flex flex-col min-h-screen justify-center items-center">
       <div className="flex h-20 shrink-0 items-end rounded-lg p-4 md:h-52">
-        <YuNeedMoneyLogo />
+        <YuNeedMoneyLogo text_color={""} />
       </div>
 
-      <p className={`${poppins.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}>
+      <p
+        className={`${poppins.className} text-xl text-gray-800 md:text-3xl md:leading-normal`}
+      >
         <strong>Log in to your account</strong>
       </p>
 
@@ -23,7 +24,6 @@ export default function Page() {
           <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
         </Link>
       </div>
-
     </main>
   );
 }

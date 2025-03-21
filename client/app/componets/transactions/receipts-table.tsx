@@ -1,12 +1,16 @@
-// import TransactionCategory from "@/app/componets/receipts/category"
 import {
   DeleteTransaction,
   EditTransaction,
-  ViewTransaction,
 } from "@/app/componets/transactions/buttons";
 
 export default async function ReceiptsTable() {
-  const receipts = undefined;
+  // Initialized
+  const receipts: {
+    id: string;
+    date: string;
+    descrption: string;
+    amount: string;
+  }[] = [];
 
   return (
     <div className="mt-6 flow-root">
