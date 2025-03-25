@@ -8,7 +8,7 @@ import geocodeAddress from "../services/geocoding.js";
 
 const processReceipt = async (req, res) => {
   try {
-    // If the file was uploaded
+    // If the file was not uploaded
     if (!req.file) {
       return res
         .status(400)
@@ -18,7 +18,7 @@ const processReceipt = async (req, res) => {
     // Calling Taggun API
     const receiptData = await scanReceipt(req.file);
 
-    console.log("Taggun API response:", JSON.stringify(receiptData, null, 2));
+    // console.log("Taggun API response:", JSON.stringify(receiptData, null, 2));
 
     // return raw data from Taggun
     res.status(200).json({
@@ -45,7 +45,16 @@ const createReceiptTransaction = async (req, res) => {
 
     // get user id
     const userId = req.user?.id || req.query.userId;
+    let userEmail;
+    const user = await User.findOne({ _id: userId });
     console.log("The user id: " + userId);
+
+    if (user) {
+      userEmail = user.email;
+      console.log("The user email: " + userEmail);
+    } else {
+      console.log("User not found");
+    }
 
     // Calling Taggun API
     const receiptData = await scanReceipt(req.file);
@@ -54,6 +63,7 @@ const createReceiptTransaction = async (req, res) => {
     // Extracting data from Taggun response
     const transactionData = {
       userId: userId,
+      userEmail: userEmail,
       type: "expense", // default to expense
       amount: receiptData.totalAmount?.data,
       category: req.body.category || "Uncategorized",
@@ -61,21 +71,38 @@ const createReceiptTransaction = async (req, res) => {
       date: receiptData.date?.data,
       merchantName: receiptData.merchantName?.data,
       merchantAddress: receiptData.merchantAddress?.data,
-      items:
-        receiptData.amounts
-          ?.filter(
-            (item) =>
-              item.index <
-              receiptData.amounts.findIndex((a) =>
-                a.text?.toLowerCase().includes("subtotal")
-              )
-          )
-          .map((item) => ({
-            name: cleanItemNames(item.text),
-            price: item.data,
-            quantity: 1,
-            totalPrice: item.data,
-          })) || [],
+      // basically what this thing is doing is:
+      // checks if amounts exists in the receiptData using optional chaining
+      // finds the index of the item where a.text includes "subtotal"
+      // then only the item whose index is less than the index of the "subtotal" is kept
+      // basically makes it so that everything before subtotal is added to the items
+      // items:
+      //   receiptData.amounts
+      //     ?.filter(
+      //       (item) =>
+      //         item.index <
+      //         receiptData.amounts.findIndex((a) =>
+      //           a.text?.toLowerCase().includes("subtotal")
+      //         )
+      //     )
+      //     .map((item) => ({
+      //       name: item.text,
+      //       price: item.data,
+      //       quantity: 1,
+      //       totalPrice: item.data,
+      //     })) || [],
+
+      // ok so i just changed this stuff and now its MUCHHHHHHH easier to read
+      // idky but entities did not exist in the receiptData at first
+      // but now it does??? how does that even work
+      // im keeping the code above incase it breaks again cus like everything breaks :(
+
+      items: receiptData.entities?.productLineItems?.map((item) => ({
+        name: cleanItemNames(item.data.name.data),
+        price: item.data.totalPrice.data,
+        quantity: item.data.quantity.data,
+        totalPrice: item.data.totalPrice.data,
+      })),
     };
 
     // ok so now we can actually use this ai thing to categorize the transaction ykwim or no?
@@ -96,6 +123,7 @@ const createReceiptTransaction = async (req, res) => {
     // ok now we can save the transaction and hope it works properly
     const transaction = new Transaction({
       userId: userId,
+      userEmail: userEmail,
       type: "expense",
       amount: transactionData.amount,
       category: categoryBasedOnAi, // Use the AI-determined category

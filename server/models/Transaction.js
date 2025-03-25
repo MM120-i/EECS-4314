@@ -6,6 +6,11 @@ const TransactionSchema = new mongoose.Schema({
     ref: "User",
     required: false,
   },
+  userEmail: {
+    type: String,
+    ref: "User",
+    required: false,
+  },
   type: { type: String, enum: ["income", "expense"], required: true },
   amount: { type: Number, required: true },
   category: { type: String, required: true },

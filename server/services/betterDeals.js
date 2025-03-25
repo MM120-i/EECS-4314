@@ -13,7 +13,9 @@ async function betterDeals(transactionId, distance, days) {
   try {
     // get the og transaction ywadwadwada
     const originalTransaction = await Transaction.findById(transactionId);
-    console.log(originalTransaction._id);
+    console.log(
+      "The location of the og transaction " + originalTransaction.location
+    );
 
     // Now lets check if the og transaction even has items in the first place
     if (originalTransaction.items.length === 0) {
@@ -25,8 +27,18 @@ async function betterDeals(transactionId, distance, days) {
 
     // now we need a date range for comparison
     // this basically gets a date then just subtracts (??? how tf does this work) the specified date from the new date???
-    const dateRange = new Date();
+    const dateRange = new Date(originalTransaction.date);
     dateRange.setDate(dateRange.getDate() - days);
+
+    console.log("Query parameters:", {
+      location: {
+        $near: {
+          $geometry: originalTransaction.location,
+          $maxDistance: distance,
+        },
+      },
+      distance: distance,
+    });
 
     // Now for some black magic
     // gotta get the transactions that are close to the original transaction addy
@@ -44,8 +56,28 @@ async function betterDeals(transactionId, distance, days) {
       },
     });
 
-    console.log(nearbyTransactions);
+    console.log(`There are ${nearbyTransactions.length} nearby Transactions:`);
 
+    nearbyTransactions.forEach((transaction) => {
+      console.log(
+        `ID: ${transaction._id} | Location: ${
+          transaction.location
+        } | Distance from original transaction: ${calculateDistance(
+          originalTransaction.location.coordinates[0],
+          originalTransaction.location.coordinates[1],
+          transaction.location.coordinates[0],
+          transaction.location.coordinates[1]
+        )}`
+      );
+
+      // Ok so basically, when we subtract two dates, its gonna give the result in milliseconds
+      // to convert to days, we just gotta divide by (1000 * 60 * 60 * 24)
+      console.log(
+        `Purchased ${
+          (originalTransaction.date - transaction.date) / (1000 * 60 * 60 * 24)
+        } days ago`
+      );
+    });
     // Now that we have the transactions that are close to the original transaction
     // we gotta check to first see if any items match
     // to check we cant just check if item1 === item2 --> that doesnt even do anything
@@ -104,6 +136,15 @@ async function betterDeals(transactionId, distance, days) {
                 name: originalItem.name,
                 price: originalItem.price,
                 merchant: originalMerchantAddress,
+                date: originalTransaction.date.toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  timeZoneName: "short",
+                }),
               },
               betterDeal: {
                 name: itemToCompare.name,
@@ -111,13 +152,23 @@ async function betterDeals(transactionId, distance, days) {
                 merchant: merchantName,
                 savings: savings,
                 savingPercentage: savingPercentage,
+                // a way to convert iso 8601 to readable date format
+                purchaseDate: transaction.date.toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  timeZoneName: "short",
+                }),
               },
             });
           }
         }
       }
       if (potentialDeals.length > 0) {
-        console.log(potentialDeals);
+        // console.log(potentialDeals);
         potentialDeals.sort(
           (a, b) => b.betterDeal.savings - a.betterDeal.savings
         ); // a and b just takes the pairs of matches in the array and compares their savings
@@ -135,6 +186,23 @@ async function betterDeals(transactionId, distance, days) {
 function fuzzyStringSimilarity(item1, item2) {
   const similarity = stringSimilarity.compareTwoStrings(item1.name, item2.name);
   return similarity > 0.9; // from [0 to 1]. 1 is the highest similarity
+}
+
+// this is just for debugging --> basically just checks the distance between two lon/lat cooridnates
+function calculateDistance(lon1, lat1, lon2, lat2) {
+  const R = 6371e3; // Radius of the earth in meters
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in meters
+
+  return Math.round(distance);
 }
 
 export default betterDeals;
