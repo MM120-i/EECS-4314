@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@heroicons/react": "^2.2.0",
     "@kinde-oss/kinde-auth-nextjs": "^2.5.3",
+    "@mui/material": "^7.0.0",
+    "axios": "^1.8.4",
     "chart.js": "^4.4.8",
     "clsx": "^2.1.1",
     "next": "15.1.7",
