@@ -1,6 +1,6 @@
 import { poppins } from "@/app/componets/fonts";
 import { AddTransnaction } from "@/app/componets/transactions/buttons";
-import Table from '@/app/componets/transactions/transaction-table';
+import TransactionsTable from "@/app/componets/transactions/transaction-table";
 
 export default function Page() {
     return (
@@ -13,7 +13,7 @@ export default function Page() {
                     <AddTransnaction />
                 </div>
             </div>
-            <Table />
+            <TransactionsTable />
             {/* pagination goes here */}
         </div>
     );

@@ -4,10 +4,9 @@ import { PowerIcon } from "@heroicons/react/24/outline";
 
 export default function SideNav() {
   return (
-    <div className="bg-white text-logo w-80 fixed top-16 left-0 h-full py-7 px-2 space-y-10 z-10 md:w-60 md:sticky">
-      <div className="md:px-7 pt-3 space-y-5">
+    <div className="bg-white text-logo fixed w-full md:top-16  md:h-full md:py-7 md:px-2 md:space-y-10 md:z-10 md:w-60 md:sticky">
+      <div className="md:px-7 md:space-y-5 ">
         <NavLinks />
-        <div className="hidden h-auto w-full grow rounded-md bg-gray-50 md:block"></div>
 
         <div className="py-2.5 px-4 hover:bg-primary rounded-xl">
           <form
