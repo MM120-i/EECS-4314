@@ -8,6 +8,9 @@ import receiptController from "../controllers/receiptController.js";
 
 const router = express.Router();
 
+/*
+all of this should go in middleware/multer
+*/
 const uploadDir = "./uploads";
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -54,6 +57,20 @@ router.post(
   authenticateToken,
   receiptController.createReceiptTransaction
 );
+
+router.delete(
+  "/:receiptId/:itemId",
+  authenticateToken,
+  receiptController.deleteReceiptItem
+);
+
+router.delete(
+  "/:receiptId",
+  authenticateToken,
+  receiptController.deleteReceipt
+);
+
+router.delete("/");
 
 router.post("/force", authenticateToken, receiptController.manualReceiptMaker);
 

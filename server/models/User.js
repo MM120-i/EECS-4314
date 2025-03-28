@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
   {
+    img: {
+      data: Buffer,
+      contentType: String,
+    },
     name: {
       type: String,
       required: [true, "User name is required"],
