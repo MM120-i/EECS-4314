@@ -168,17 +168,17 @@ const manualReceiptMaker = async (req, res) => {
 
     const transaction = new Transaction({
       userId: userId,
-      type: "expense",
-      amount: receiptData.amount,
+      type: receiptData.type || "expense",
+      amount: receiptData.amount || "0",
       category: receiptData.category || "Uncategorized",
-      tax: receiptData.tax,
-      date: receiptData.date,
-      merchantAddress: receiptData.merchantAddress,
+      tax: receiptData.tax || "0",
+      date: receiptData.date || new Date(),
+      merchantAddress: receiptData.merchantAddress || "No address",
       location: {
         type: "Point",
         coordinates: [
-          receiptData.location.coordinates[0],
-          receiptData.location.coordinates[1],
+          receiptData.location.coordinates[0] || null,
+          receiptData.location.coordinates[1] || null,
         ],
       },
       items: receiptData.items.map((item) => ({

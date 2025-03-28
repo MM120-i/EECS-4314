@@ -1,5 +1,5 @@
 import express from "express";
-import authenticateToken from "../middleware/auth/jwt.js"; // unused rn
+import authenticateToken from "../middleware/auth/jwt.js";
 import userController from "../controllers/userController.js";
 import errorHandler from "../middleware/errorHandler.js";
 

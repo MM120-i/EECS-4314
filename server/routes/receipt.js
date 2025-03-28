@@ -2,6 +2,8 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+
+import authenticateToken from "../middleware/auth/jwt.js";
 import receiptController from "../controllers/receiptController.js";
 
 const router = express.Router();
@@ -45,12 +47,14 @@ router.post(
   upload.single("receipt"),
   receiptController.processReceipt
 );
+
 router.post(
   "/transaction",
   upload.single("receipt"),
+  authenticateToken,
   receiptController.createReceiptTransaction
 );
 
-router.post("/forceReceipt", receiptController.manualReceiptMaker);
+router.post("/force", authenticateToken, receiptController.manualReceiptMaker);
 
 export default router;
