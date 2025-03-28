@@ -5,10 +5,11 @@ import {
   EditTransaction,
   ViewTransaction,
 } from "@/app/componets/transactions/buttons";
+import { getTransactions } from "@/app/data/transactions";
 
 export default async function TransactionsTable() {
   // TODO: Need to get real data
-  // const transactions = ; get data from DB later
+  const transactions = (await getTransactions())?.data
 
   return (
     <div className="mt-6 flow-root">
@@ -16,7 +17,7 @@ export default async function TransactionsTable() {
         <div className="rounded-lg bg-grey-50 p-2 md:pt-0">
           <div className="md:hidden">
             {transactions?.map((transaction) => (
-              <div key={transaction.id} className="mb-1 w-full rounded-xl p-4">
+              <div key={transaction._id} className="mb-1 w-full rounded-xl p-4">
                 <div className="flex items-center border-b pb-4 gap-5">
                   <div className="mb-2 flex items-center">
                     <p className="text-sm text-gray-500">{transaction.date}</p>
@@ -30,9 +31,9 @@ export default async function TransactionsTable() {
                       <p className="text-lg">{transaction.descrption}</p>
                     </div>
                     <div className="flex  gap-2">
-                      <ViewTransaction id={transaction.id} />
-                      <EditTransaction id={transaction.id} />
-                      <DeleteTransaction id={transaction.id} />
+                      <ViewTransaction id={transaction._id} />
+                      <EditTransaction id={transaction._id} />
+                      <DeleteTransaction id={transaction._id} />
                     </div>
                   </div>
                 </div>
@@ -59,7 +60,7 @@ export default async function TransactionsTable() {
             <tbody className="bg-white">
               {transactions?.map((transaction) => (
                 <tr
-                  key={transaction.id}
+                  key={transaction._id}
                   className="w-full border-b py-3 text-lg last-of-type:border-none"
                 >
                   <td className="whitespace-nowrap px-3 py-3">
@@ -76,9 +77,9 @@ export default async function TransactionsTable() {
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex justify-end gap-3">
-                      <ViewTransaction id={transaction.id} />
-                      <EditTransaction id={transaction.id} />
-                      <DeleteTransaction id={transaction.id} />
+                      <ViewTransaction id={transaction._id} />
+                      <EditTransaction id={transaction._id} />
+                      <DeleteTransaction id={transaction._id} />
                     </div>
                   </td>
                 </tr>

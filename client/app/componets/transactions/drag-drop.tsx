@@ -1,7 +1,7 @@
 'use client';
 
 import { uploadReceipt } from "@/app/data/receipts";
-import { ChangeEvent, useActionState, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import React from "react";
@@ -14,6 +14,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import { Button } from "../button";
 import { CloudArrowDownIcon } from "@heroicons/react/24/solid";
+import CircularProgress from "@mui/material/CircularProgress";
+import { log } from "console";
 
 
 
@@ -26,18 +28,32 @@ export default function DragNDrop() {
     const [status, setStatus] = useState<UploadStatus>('idle')
     const [data, setData] = useState(null)
     const [open, setOpen] = useState(false)
+    const [error, setError] = useState<String | null>(null)
 
-    //const maxSize = 5 * 1024 * 1024 // 5MB
+    const maxSize = 5 * 1024 * 1024 // 5MB
+
+    function checkFile(file : File){
+        setFile(null)
+        setError(null)
+        if(file == null) return 
+        if(file.type != "image/jpeg"){
+            setError("File must be a Jpeg Image!")
+            return
+        }
+        if (file.size > maxSize){
+            setError("Jpeg Image must be 5MG or less!")
+            return
+        }
+        setFile(file)
+    }
 
     function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
         if (e.target.files) {
-            setFile(e.target.files[0])
+            checkFile(e.target.files[0])
         }
     }
 
     function handleFileDrop(e ){
-        console.log("File(s) dropped");
-
         // Prevent default behavior (Prevent file from being opened)
         e.preventDefault();
       
@@ -45,13 +61,10 @@ export default function DragNDrop() {
           // Use DataTransferItemList interface to access the file(s)
           if(e.dataTransfer.items[0].kind == "file"){
             const file = e.dataTransfer.items[0].getAsFile();
-            if(file && file.type == "image/jpeg"){
-                setFile(file)
-                console.log(file.type)
-            }
+            checkFile(file)
           }
         }
-        }   
+    }   
 
 
     async function handleFileUpload() {
@@ -59,23 +72,26 @@ export default function DragNDrop() {
     
         if (!file) return
         setStatus("uploading");
-
+        
         const formData = new FormData();
-        formData.append('receipts', file, file.name)
+        formData.append('receipt', file, file.name)
 
         try {
 
             const res = await uploadReceipt(formData);
+            console.log("hell");    
 
-
-            if (!res) {
+            if (!response.ok) {
                 setStatus("error")
-                console.log(res)
+                console.log("bit")
+                setError(response)
             }
             else {
+                setFile(null)
+                setOpen(false);
+                setError(null)
                 setStatus("success")
-                console.log(res)
-                //console.log(await res.json())
+                console.log("error")
             }
 
 
@@ -91,6 +107,9 @@ export default function DragNDrop() {
 
     const handleClose = () => {
         setOpen(false);
+        setFile(null)
+        setError(null)
+        setStatus('idle')
     };
 
     return (
@@ -98,48 +117,33 @@ export default function DragNDrop() {
             <Button onClick={handleClickOpen}>
                 Upload Receipt
             </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                slotProps={{
-                    paper: {
-                        component: 'form',
-                        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                            event.preventDefault();
-                            const formData = new FormData(event.currentTarget);
-                            const formJson = Object.fromEntries((formData as any).entries());
-                            const email = formJson.email;
-                            console.log(email);
-                            handleClose();
-                        },
-                    },
-                }}
-            >
-                <DialogTitle>Subscribe</DialogTitle>
+            <Dialog open={open} onClose={handleClose} >
+                <DialogTitle>Input a Receipt for processing</DialogTitle>
                 <DialogContent>
-                        <div className="flex items-center justify-center w-full" >
-                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-30 mt-5 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 border-primary">
-                                <div className="flex flex-col items-center justify-center pt-5 pb-6" onDrop={handleFileDrop} onDragOver={handleFileDrop}>
+                        <div className="flex items-center justify-center w-full flex-col gap-5" >
+                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center  mt-2  border-2 border-dashed rounded-lg cursor-pointer  border-primary">
+                                <div className="flex flex-col items-center justify-center p-10" onDrop={handleFileDrop} onDragOver={handleFileDrop}>
                                     <CloudArrowDownIcon className="h-10 w-10" />
                                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">JPG (MAX. 800x400px)</p>
                                 </div>
-                                <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange}  />
-                            </label>
-                            {file && (
+                                <input id="dropzone-file" type="file" accept="image/jpeg" className="hidden" onChange={handleFileChange}  />
+                                {file && (
                                 <div className="mb-4 text-sm">
                                     <p>File name: {file.name}</p>
                                     <p>Size: {(file.size / 1024 / 1024).toFixed(2)} MB</p>
                                     <p>Type: {file.type} </p>
                                 </div>
                             )}
+                            </label>
+                            {error && (<p className="text-primary">{error}</p>)}
+                            <div className="flex  items-center justify-center w-full gap-10">
+                            <Button onClick={handleClose}>Cancel</Button>
+                             <Button onClick={handleFileUpload} aria-disabled={status === 'uploading' || file == null} >Upload</Button>
+                            </div>
+                            {status === 'uploading' && <CircularProgress />}
                         </div>
-
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Subscribe</Button>
-                </DialogActions>
             </Dialog>
         </div>
         

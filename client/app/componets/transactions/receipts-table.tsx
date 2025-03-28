@@ -2,23 +2,19 @@ import {
   DeleteTransaction,
   EditTransaction,
 } from "@/app/componets/transactions/buttons";
+import { getReceipt } from "@/app/data/receipts";
 
-export default async function ReceiptsTable() {
+export default async function ReceiptsTable({id} : {id: String}) {
   // Initialized
-  const receipts: {
-    id: string;
-    date: string;
-    descrption: string;
-    amount: string;
-  }[] = [];
+  const receipt = (await getReceipt(id))?.data
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-grey-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {receipts?.map((receipt) => (
-              <div key={receipt.id} className="mb-1 w-full rounded-xl p-4">
+            {receipt?.map((receipt) => (
+              <div key={receipt._id} className="mb-1 w-full rounded-xl p-4">
                 <div className="flex items-center border-b pb-4 gap-5">
                   <div className="mb-2 flex items-center">
                     <p className="text-sm text-gray-500">{receipt.date}</p>
@@ -41,32 +37,38 @@ export default async function ReceiptsTable() {
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Date
+                  Name
                 </th>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Item Description
+                  Price
                 </th>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Amount
+                  Quantity
+                </th>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+                  Total
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {receipts?.map((receipt) => (
+              {receipt?.map((receipt) => (
                 <tr
-                  key={receipt.id}
-                  className="w-full border-b py-3 text-lg last-of-type:border-none"
+                  key={receipt._id}
+                  className="w-full border-b py-3 text-lg last-of-type:border-none "
                 >
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {receipt.date}
+                  <td className="whitespace-nowrap px-4 py-3">
+                    {receipt.name}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {receipt.descrption}
+                  <td className="whitespace-nowrap px-4 py-3">
+                    {receipt.price}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {receipt.amount}
+                  <td className="whitespace-nowrap px-4 py-3">
+                    {receipt.quantity}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
+                  <td className="whitespace-nowrap px-4 py-3">
+                    {receipt.totalPrice}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3">
                     <div className="flex justify-end gap-3">
                       <EditTransaction id={receipt.id} />
                       <DeleteTransaction id={receipt.id} />
