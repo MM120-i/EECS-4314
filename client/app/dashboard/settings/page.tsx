@@ -1,3 +1,5 @@
-export default function Page() {
-    return <p>Application Settings</p>
+import { redirect } from "next/navigation";
+
+export default function SettingsPage() {
+  redirect("/dashboard/settings/profile");
 }
