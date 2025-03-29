@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
 
+import Receipt from "../models/Receipt.js";
+
 const getUserById = async (req, res) => {
   try {
     const userId = req.params.id || req.user?.id;
@@ -62,7 +64,7 @@ const getUserTransactions = async (req, res) => {
 
     console.log(userId);
 
-    // find user and populate transaction
+    // find user and populate transaction (might be good for security but idk)
 
     // const user = await User.findById(userId)
     //   .select("transactions")
@@ -74,7 +76,7 @@ const getUserTransactions = async (req, res) => {
 
     // res.status(200).json({ transactions: user.transactions });
 
-    // Alternatively we can just use the transaction schema to get the transactions
+    // or we can just use the transaction schema to get the transactions
     const transactions = await Transaction.find({ userId: userId }).select(
       "category _id"
     );
@@ -94,32 +96,55 @@ const getTransactionById = async (req, res) => {
 
     const user = await User.findById(userId);
 
+    const transaction = await Transaction.findById(transactionId);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // check if the transaction belongs to the user
-    if (!user.transactions.includes(transactionId)) {
-      return res.status(404).json({
-        message: "Access denied: Transaction does not belong to this user",
-      });
-    }
-
-    const result = await User.findById(userId).populate({
-      path: "transactions",
-      match: { _id: transactionId },
-      select: "category items",
-    });
-
-    const transaction = result.transactions[0];
 
     if (!transaction) {
       return res.status(404).json({ message: "Transaction not found" });
     }
 
-    res.status(200).json(transaction);
+    // check if the transaction belongs to the user
+    if (!user.transactions.includes(transactionId)) {
+      return res.status(404).json({
+        message: "Transaction does not belong to this user",
+      });
+    }
+
+    // check if the receipt has a receiptId (means its a receipt)
+    if (transaction.receiptId) {
+      const receipt = await Receipt.findById(transaction.receiptId);
+
+      if (!receipt) {
+        return res.status(404).json({ message: "Receipt not found" });
+      }
+
+      return res.status(200).json({
+        transactionId: transaction._id,
+        receiptId: receipt.receiptId,
+        date: transaction.date,
+        description: transaction.description,
+        category: transaction.category,
+        amount: transaction.amount,
+        merchant: receipt.merchant,
+        items: receipt.items, // Only include the items array from the receipt
+      });
+    } else {
+      // just means its a normal transaction (not a receipt)
+      return res.status(200).json({
+        date: transaction.date,
+        description: transaction.description,
+        category: transaction.category,
+        amount: transaction.amount,
+      });
+    }
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      status: "Error",
+      message: "Server error",
+    });
   }
 };
 

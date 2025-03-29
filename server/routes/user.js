@@ -5,11 +5,13 @@ import errorHandler from "../middleware/errorHandler.js";
 
 import betterDeals from "../services/betterDeals.js";
 import transactionController from "../controllers/aggregationController.js";
-import EMA_forecastNextMonth from "../services/forecastReceipt.js";
-import { EMA_forecastCategorical } from "../services/forecastReceipt.js";
+import EMA_forecastNextMonth, {
+  EMA_forecastCategorical,
+} from "../services/forecastReceipt.js";
 
-import fetchMonthlySpendings from "../utility/spendingAggregator.js";
-import { fetchCategoricalSpendings } from "../utility/spendingAggregator.js";
+import fetchMonthlySpendings, {
+  fetchCategoricalSpendings,
+} from "../utility/spendingAggregator.js";
 
 const router = express.Router();
 

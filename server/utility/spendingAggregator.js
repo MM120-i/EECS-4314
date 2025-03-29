@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import Receipt from "../models/Receipt.js";
 import Transaction from "../models/Transaction.js";
 
 export const fetchMonthlySpendings = async (userId) => {
   try {
-    const monthlySpendings = await Transaction.aggregate([
+    const monthlySpendings = await Receipt.aggregate([
       {
         $match: {
           userId: new mongoose.Types.ObjectId(userId),
@@ -71,7 +72,7 @@ export const fetchCategoricalSpendings = async (userId) => {
       // if it doesnt we create that category and let that store an array
       // what this does is that it allows us to use the push function
       // which is only for arrays
-      // then we can push the array into the category as an object
+      // then we can push the array into the category as an array of objects
       if (!summarizedData[category]) {
         summarizedData[category] = [];
       }

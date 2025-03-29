@@ -1,3 +1,4 @@
+import Receipt from "../models/Receipt.js";
 import Transaction from "../models/Transaction.js";
 
 import stringSimilarity from "string-similarity";
@@ -12,7 +13,7 @@ import stringSimilarity from "string-similarity";
 async function betterDeals(transactionId, distance, days) {
   try {
     // get the og transaction ywadwadwada
-    const originalTransaction = await Transaction.findById(transactionId);
+    const originalTransaction = await Receipt.findById(transactionId);
     console.log(
       "The location of the og transaction " + originalTransaction.location
     );
@@ -42,7 +43,7 @@ async function betterDeals(transactionId, distance, days) {
 
     // Now for some black magic
     // gotta get the transactions that are close to the original transaction addy
-    const nearbyTransactions = await Transaction.find({
+    const nearbyTransactions = await Receipt.find({
       // first of all do NOT include the og transaction id
       _id: { $ne: transactionId }, // $ne is just 'not equal to'
       date: { $gte: dateRange }, // $gte is just 'greater than or equal to'
@@ -131,6 +132,15 @@ async function betterDeals(transactionId, distance, days) {
             const savings = originalItemPrice - itemPrice;
             const savingPercentage = (savings / originalItemPrice) * 100;
 
+            /* 
+              what we r doing here
+              making an object that will be pushed to an array
+              basically we just gotta store the item that we found a better deal for
+              and the better deal itself
+              all these lines are pretty much just a bunch of stats
+              the actual thing to look for is that we are creating an object
+              that will be pushed to an array
+              */
             potentialDeals.push({
               originalItem: {
                 name: originalItem.name,
@@ -146,6 +156,7 @@ async function betterDeals(transactionId, distance, days) {
                   timeZoneName: "short",
                 }),
               },
+
               betterDeal: {
                 name: itemToCompare.name,
                 price: itemToCompare.price,
@@ -182,6 +193,8 @@ async function betterDeals(transactionId, distance, days) {
     throw err;
   }
 }
+
+function getNearbyTransactions(originalReceiptId, originalReceipt) {}
 
 function fuzzyStringSimilarity(item1, item2) {
   const similarity = stringSimilarity.compareTwoStrings(item1.name, item2.name);

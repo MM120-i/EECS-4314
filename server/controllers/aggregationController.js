@@ -1,4 +1,4 @@
-import Transaction from "../models/Transaction.js";
+import Receipt from "../models/Receipt.js";
 import mongoose from "mongoose";
 
 import {
@@ -26,7 +26,7 @@ const getDailySpendings = async (req, res) => {
     // getting the user id fromm their jwt
     const userId = req.user?.id || req.query.userId;
 
-    const monthlySpendings = await Transaction.aggregate([
+    const monthlySpendings = await Receipt.aggregate([
       {
         $match: {
           userId: new mongoose.Types.ObjectId(userId),
@@ -81,7 +81,9 @@ const getCategoricalSpendings = async (req, res) => {
   try {
     // getting the user id fromm their jwt
     const userId = req.user?.id || req.query.userId;
-    const categoricalSpendings = await fetchCategoricalSpendings(userId);
+    const result = await fetchCategoricalSpendings(userId);
+
+    const categoricalSpendings = result.categoricalSpendings;
 
     // we now need to aggregate this data from categoricalSpendings to get a summary
     // of the spendings
@@ -142,7 +144,7 @@ const getMerchantSpendings = async (req, res) => {
     // getting the user id fromm their jwt
     const userId = req.user?.id || req.query.userId;
 
-    const merchantSpendings = await Transaction.aggregate([
+    const merchantSpendings = await Receipt.aggregate([
       {
         $match: {
           userId: new mongoose.Types.ObjectId(userId),
