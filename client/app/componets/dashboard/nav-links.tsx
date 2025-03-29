@@ -13,7 +13,7 @@ import clsx from "clsx";
 const links = [
   { name: "Home", href: "/dashboard", icon: ChartPieIcon },
   {
-    name: "Spending", // Reworded to "Spendings" so that it fits better. But still refer to it as "Transactions"
+    name: "Spendings", // Reworded to "Spendings" so that it fits better. But still refer to it as "Transactions"
     href: "/dashboard/transactions",
     icon: CurrencyDollarIcon,
   },
