@@ -10,8 +10,6 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import { List } from "postcss/lib/list";
 import { useActionState, useState } from "react";
 
-
-
 export default function Page() {
 
     const initialState: State = { message: null, errors: {} };
@@ -61,7 +59,7 @@ export default function Page() {
                     {/* Transaction Amount */}
                     <div className="mb-4">
                         <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-                            Choose an amount
+                            Enter an amount
                         </label>
                         <div className="relative mt-2 rounded-md">
                             <div className="relative">
@@ -93,7 +91,7 @@ export default function Page() {
                     {/* Transaction Category */}
                     <div className="mb-4">
                         <label htmlFor="category" className="mb-2 block text-sm font-medium">
-                            Choose an Categroy
+                            Choose an Category
                         </label>
                         <div className="relative">
                             <Select

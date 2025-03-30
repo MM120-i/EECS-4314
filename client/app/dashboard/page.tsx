@@ -6,6 +6,7 @@ import SavingsAccount from "./SavingsAccount";
 import SpendvsIncome from "./SpendvsIncome";
 import SpendingInsights from "./SpendingInsights";
 import MostDrainingSpends from "./MostDrainingSpends";
+import ForecastDisplay from "./ForecastDisplay";
 
 export default function Page() {
   return (
@@ -27,6 +28,7 @@ export default function Page() {
 
         <div className="w-full sm:w-[400px] md:w-[600px] lg:w-[700px]">
           <MostDrainingSpends />
+          <ForecastDisplay />
           {/* area analytics goes here */}
         </div>
       </div>

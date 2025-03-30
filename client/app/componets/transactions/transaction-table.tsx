@@ -1,6 +1,7 @@
 import { transactions } from "@/app/lib/placeholder-data";
 import TransactionCategory from "@/app/componets/transactions/category";
 import {
+  DeleteReceipt,
   DeleteTransaction,
   EditTransaction,
   ViewTransaction,
@@ -8,7 +9,7 @@ import {
 import { getTransactions } from "@/app/data/transactions";
 
 export default async function TransactionsTable() {
-  const transactions = (await getTransactions())?.data
+  const transactions = (await getTransactions())?.data;
 
   return (
     <div className="mt-6 flow-root">
@@ -23,17 +24,16 @@ export default async function TransactionsTable() {
                   </div>
                   <div className="flex w-full items-center justify-between pt-4">
                     <div>
-                    <p className="text-md">{transaction.description}</p>
+                      <p className="text-md">{transaction.description}</p>
                       <p className="text-md font-medium">
-                      {(transaction.amount).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}
+                        {transaction.amount.toLocaleString("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        })}
                       </p>
                     </div>
-                    <TransactionCategory category={transaction.category}/>
-                    <div className="flex  gap-2">
-                      <ViewTransaction id={transaction._id} />
-                      <EditTransaction id={transaction._id} />
-                      <DeleteTransaction id={transaction._id} />
-                    </div>
+                    <TransactionCategory category={transaction.category} />
+                    <div className="flex  gap-2"></div>
                   </div>
                 </div>
               </div>
@@ -72,13 +72,26 @@ export default async function TransactionsTable() {
                     <TransactionCategory category={transaction.category} />
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-sm ">
-                    {(transaction.amount).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}
+                    {transaction.amount.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex justify-end gap-3">
-                     { transaction?.type === "Receipt" && <ViewTransaction id={transaction._id} />}
-                      <EditTransaction id={transaction._id} />
-                      <DeleteTransaction id={transaction._id} />
+                      {transaction?.type === "Receipt" && (
+                        <>
+                          <ViewTransaction id={transaction._id} />
+                          <DeleteReceipt id={transaction._id} />
+                        </>
+                      )}
+                      {transaction?.type !== "Receipt" && (
+                        <>
+                          <ViewTransaction id={transaction._id} />
+                          <DeleteTransaction id={transaction._id} />
+                          <EditTransaction id={transaction._id} />
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>
