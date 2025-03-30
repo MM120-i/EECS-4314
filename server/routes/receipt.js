@@ -70,8 +70,6 @@ router.delete(
   receiptController.deleteReceipt
 );
 
-router.delete("/");
-
 router.post("/force", authenticateToken, receiptController.manualReceiptMaker);
 
 export default router;
