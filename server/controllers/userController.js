@@ -78,7 +78,7 @@ const getUserTransactions = async (req, res) => {
 
     // or we can just use the transaction schema to get the transactions
     const transactions = await Transaction.find({ userId: userId }).select(
-      "_id receiptId description category amount name type"
+      "_id date receiptId description category amount name type"
     );
 
     res.status(200).json({ transactions });
