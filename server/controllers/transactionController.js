@@ -1,3 +1,4 @@
+import Receipt from "../models/Receipt.js";
 import Transaction from "../models/Transaction.js";
 
 import User from "../models/User.js";
