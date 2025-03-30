@@ -28,7 +28,7 @@ export default async function ReceiptsTable({id} : {id: String}) {
                     </div>
                     <div className="flex  gap-2">
                       <EditReceipt transId= {id} id={receipt._id} />
-                      <DeleteReceipt transId= {id} id={receipt._id} />
+                      <DeleteReceipt id={receipt._id} />
                     </div>
                   </div>
                 </div>
@@ -73,7 +73,7 @@ export default async function ReceiptsTable({id} : {id: String}) {
                   <td className="whitespace-nowrap px-4 py-3">
                     <div className="flex justify-end gap-3">
                     <EditReceipt transId= {id} id={receipt._id} />
-                    <DeleteReceipt transId= {id} id={receipt._id} />
+                    <DeleteReceipt id={receipt._id} />
                     </div>
                   </td>
                 </tr>

@@ -63,8 +63,8 @@ export function EditReceipt({ id, transId }: { id: string, tranId: string }) {
     )
 }
 
-export function DeleteReceipt({ id, transId}: { id: string, transId: string }) {
-    const DeleteReceiptWithId = deleteReceipt.bind(null,id, transId)
+export function DeleteReceipt({ id }: { id: string }) {
+    const DeleteReceiptWithId = deleteReceipt.bind(null,id)
     return (
         <form action={DeleteReceiptWithId}>
             <button type="submit"  className="rounded-md border p-2 hover:bg-gray-100">
