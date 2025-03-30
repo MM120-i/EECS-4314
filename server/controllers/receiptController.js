@@ -296,22 +296,22 @@ const deleteReceipt = async (req, res) => {
     simple
     */
   try {
-    const { recieptId } = req.body;
+    const { receiptId } = req.params;
 
     const userId = req.user?.id || req.query.userId;
 
-    const receipt = await Receipt.findByIdAndDelete(recieptId);
-    console.log("Deleted transaction:", recieptId.userId);
+    const receipt = await Receipt.findByIdAndDelete(receiptId);
+    console.log("the receipt with id " + receiptId + " should be deleted");
 
     // Also need to remove the transaction from the user object
     await User.findByIdAndUpdate(userId, {
-      $pull: { transactions: receipt._id },
+      $pull: { transactions: receiptId },
     });
 
     res.status(201).json({
       status: "Success",
       message: "Receipt deleted successfully",
-      data: transaction,
+      data: receipt,
     });
   } catch (err) {
     console.error("Error deleting receipt :", err);
