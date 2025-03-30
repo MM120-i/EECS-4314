@@ -289,6 +289,42 @@ const deleteReceiptItem = async (req, res) => {
   }
 };
 
+// const deleteReceipt = async (req, res) => {
+//   /*
+//     just get the receipt id from the frontend
+//     then delete the receipt with that id
+//     simple
+//     */
+//   try {
+//     const { receiptId } = req.params;
+
+//     const userId = req.user?.id || req.query.userId;
+
+//     const receipt = await Receipt.findByIdAndDelete(receiptId);
+//     console.log("the receipt with id " + receiptId + " should be deleted");
+
+//     // Also need to remove the transaction from the user object
+//     await User.findByIdAndUpdate(userId, {
+//       $pull: { transactions: receiptId },
+//     });
+
+//     await Transaction.findOneAndDelete({ receiptId: receiptId });
+
+//     res.status(201).json({
+//       status: "Success",
+//       message: "Receipt deleted successfully",
+//       data: receipt,
+//     });
+//   } catch (err) {
+//     console.error("Error deleting receipt :", err);
+//     res.status(500).json({
+//       status: "Error",
+//       message: "Failed to delete receipt",
+//       error: err.message,
+//     });
+//   }
+// };
+
 const deleteReceipt = async (req, res) => {
   /*
     just get the receipt id from the frontend
@@ -296,17 +332,37 @@ const deleteReceipt = async (req, res) => {
     simple
     */
   try {
-    const { receiptId } = req.params;
+    const transactionId = req.params.receiptId;
 
     const userId = req.user?.id || req.query.userId;
+    // const receipt = await Receipt.findByIdAndDelete(receiptId);
 
-    const receipt = await Receipt.findByIdAndDelete(receiptId);
-    console.log("the receipt with id " + receiptId + " should be deleted");
+    // find the transaction by id
+
+    const transaction = await Transaction.findById(transactionId);
+    console.log(transaction.receiptId);
+
+    if (!transaction.receiptId) {
+      return res.status(404).json({
+        status: "Error",
+        message: "Transaction is not a receipt",
+      });
+    }
+
+    const receipt = await Receipt.findByIdAndDelete(transaction.receiptId);
+    if (!receipt) {
+      return res.status(404).json({
+        status: "Error",
+        message: "Receipt not found with id: " + transaction.receiptId,
+      });
+    }
 
     // Also need to remove the transaction from the user object
     await User.findByIdAndUpdate(userId, {
-      $pull: { transactions: receiptId },
+      $pull: { transactions: transactionId },
     });
+
+    await Transaction.findByIdAndDelete(transactionId);
 
     res.status(201).json({
       status: "Success",

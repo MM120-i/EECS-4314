@@ -156,10 +156,9 @@ const getUserReceipts = async (req, res) => {
     const userId = req.user?.id || req.query.userId;
 
     // Find all transactions for this user with type "expense" that have receiptId (or type "Receipt" if you have that)
-    const receiptsTransactions = await Transaction.find({
+    const receiptsTransactions = await Receipt.find({
       userId: userId,
-      receiptId: { $exists: true, $ne: null }, // Only get transactions that have receipt data
-    }).select("_id date description category amount name type receiptId");
+    }).select("_id date description category amount name type");
 
     if (!receiptsTransactions || receiptsTransactions.length === 0) {
       return res.status(200).json({ receipts: [] });
