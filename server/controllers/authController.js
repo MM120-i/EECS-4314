@@ -22,7 +22,7 @@ const register = async (req, res, next) => {
     // check if the uet is already registered
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      const err = new Error(" User already exists with this email");
+      const err = new Error("User already exists with this email");
       err.statusCode = 409; //
       throw err;
     }

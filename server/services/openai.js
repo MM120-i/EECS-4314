@@ -9,13 +9,21 @@ const openai = new OpenAI({
 
 // Categories that ==Christie + Mahim== agreed on so its not on me if they arent good enough
 const CATEGORIES = [
+  "Housing",
+  "Utilities",
+  "Food_and_Dining",
+  "Insurance",
+  "Healthcare",
+  "Education",
+  "Grocery",
+  "Subscription",
+  "Debt_Payment",
   "Groceries",
   "Health and Fitness",
   "Office expenses",
   "Shopping",
   "Entertainment",
   "Transportation",
-  "Dining",
   "Personal Care",
   "Other Transfers",
   "Other",
