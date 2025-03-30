@@ -3,6 +3,7 @@
 import { Button } from "@/app/componets/button";
 import TransactionCategory from "@/app/componets/transactions/category";
 import { createTransaction } from "@/app/data/transactions";
+import { Categories } from "@/app/lib/categories";
 import { CalendarDateRangeIcon, ChartPieIcon, CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { Link, MenuItem, Select, Typography } from "@mui/material";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -15,7 +16,6 @@ export default function Page() {
 
     const initialState: State = { message: null, errors: {} };
     const [state, formAction] = useActionState(createTransaction, initialState);
-    const categorys = ["Grocery", "idk", "option2"]
     const [name, setName] = useState('')
     const [category, setCategory] = useState('')
     const [date, setDate] = useState(new Date().toISOString().split('T')[0])
@@ -104,8 +104,8 @@ export default function Page() {
                                 onChange={e => setCategory(e.target.value)}
                                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                             >   
-                            {categorys.map((cat, index) => (
-                                <MenuItem key={index} value={cat}><TransactionCategory category={cat}></TransactionCategory></MenuItem>
+                            {Categories.map((cat, index) => (
+                                <MenuItem key={index} value={cat.label}><TransactionCategory category={cat.label}></TransactionCategory></MenuItem>
                             ))}
                             </Select>
                             <ChartPieIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />

@@ -1,6 +1,7 @@
 'use server'
 import { ok } from 'assert';
 import axios from 'axios'
+import { revalidatePath } from 'next/cache';
 import { responseCookiesToRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import { cookies } from "next/headers";
 
@@ -15,11 +16,12 @@ export async function uploadReceipt(formData: FormData) {
         Authorization: `Bearer ${token}`,
     }})
 
-    console.log({ok:true, data:response.data.data.items})
+    revalidatePath('/dashboard/transactions');
+    return {ok:true, data:response.data.data.items}
     }
     catch(error){
-        console.log({ok:false, data: error.response.data})
-        // return {ok:false, data: error.response.data}
+        // console.log({ok:false, data: error.response.data})
+        return {ok:false, data: error.response.data}
         
     }
     
@@ -43,5 +45,22 @@ export async function getReceipt(transactionID: String) {
         
     }
     
+}
+
+export async function deleteReceipt(id: string, transId: string){
+    try {
+      const token = (await cookies()).get("session")?.value;
+      const response = await axios.delete(`${BACKEND_URL}/receipt/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+
+    } catch (error) {
+      return {
+        message: `${error}`,
+      };
+    }
+    revalidatePath(`/dashboard/transactions/${transId}`);
 }
 

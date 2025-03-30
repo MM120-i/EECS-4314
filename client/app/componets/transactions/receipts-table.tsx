@@ -1,5 +1,7 @@
 import {
+  DeleteReceipt,
   DeleteTransaction,
+  EditReceipt,
   EditTransaction,
 } from "@/app/componets/transactions/buttons";
 import { getReceipt } from "@/app/data/receipts";
@@ -25,8 +27,8 @@ export default async function ReceiptsTable({id} : {id: String}) {
                       <p className="text-lg">{receipt.descrption}</p>
                     </div>
                     <div className="flex  gap-2">
-                      <EditTransaction id={receipt.id} />
-                      <DeleteTransaction id={receipt.id} />
+                      <EditReceipt transId= {id} id={receipt._id} />
+                      <DeleteReceipt transId= {id} id={receipt._id} />
                     </div>
                   </div>
                 </div>
@@ -56,7 +58,7 @@ export default async function ReceiptsTable({id} : {id: String}) {
                   key={receipt._id}
                   className="w-full border-b py-3 text-lg last-of-type:border-none "
                 >
-                  <td className="whitespace-nowrap px-4 py-3">
+                  <td className="whitespace-nowrap px-4 py-3">~
                     {receipt.name}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
@@ -70,8 +72,8 @@ export default async function ReceiptsTable({id} : {id: String}) {
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
                     <div className="flex justify-end gap-3">
-                      <EditTransaction id={receipt.id} />
-                      <DeleteTransaction id={receipt.id} />
+                    <EditReceipt transId= {id} id={receipt._id} />
+                    <DeleteReceipt transId= {id} id={receipt._id} />
                     </div>
                   </td>
                 </tr>
