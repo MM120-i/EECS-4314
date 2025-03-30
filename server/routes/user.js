@@ -31,6 +31,14 @@ router.get(
   userController.getTransactionById
 );
 
+router.get("/user/receipts", authenticateToken, userController.getUserReceipts);
+
+router.get(
+  "/user/transactions/receipt/:receiptId",
+  authenticateToken,
+  userController.getReceiptById
+);
+
 // this block here should just be a function
 // might fix it later idk
 // also, this isnt protecected at all so like gotta fix this too

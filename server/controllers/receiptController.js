@@ -154,6 +154,7 @@ const createReceiptTransaction = async (req, res) => {
       }`,
       category: categoryBasedOnAi,
       amount: receiptData.amount,
+      type: "Receipt",
     });
 
     const savedTransaction = await transaction.save();
@@ -166,7 +167,7 @@ const createReceiptTransaction = async (req, res) => {
     res.status(201).json({
       status: "Success",
       message: "Transaction created successfully",
-      data: transaction,
+      data: receipt,
     });
   } catch (err) {
     console.error("Receipt transaction creation error:", err);

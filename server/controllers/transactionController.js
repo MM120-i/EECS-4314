@@ -15,7 +15,7 @@ const createTransaction = async (req, res) => {
     */
 
   try {
-    const { date, description, category, amount } = req.body;
+    const { date, description, category, amount, name } = req.body;
 
     const userId = req.user?.id || req.query.userId;
 
@@ -37,6 +37,8 @@ const createTransaction = async (req, res) => {
       description: description || "No description",
       category: category || "Uncategorized",
       amount: amount || "0.00",
+      name: name || "Unnamed",
+      type: "standalone",
     });
 
     const savedTransaction = await transaction.save();

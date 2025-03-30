@@ -78,7 +78,7 @@ const getUserTransactions = async (req, res) => {
 
     // or we can just use the transaction schema to get the transactions
     const transactions = await Transaction.find({ userId: userId }).select(
-      "category _id"
+      "_id receiptId description category amount name type"
     );
 
     res.status(200).json({ transactions });
@@ -130,6 +130,7 @@ const getTransactionById = async (req, res) => {
         amount: transaction.amount,
         merchant: receipt.merchant,
         items: receipt.items, // Only include the items array from the receipt
+        name: transaction.name || "Unnamed",
       });
     } else {
       // just means its a normal transaction (not a receipt)
@@ -138,9 +139,86 @@ const getTransactionById = async (req, res) => {
         description: transaction.description,
         category: transaction.category,
         amount: transaction.amount,
+        name: transaction.name || "Unnamed",
       });
     }
   } catch (err) {
+    res.status(500).json({
+      status: "Error",
+      message: "Server error",
+    });
+  }
+};
+
+const getUserReceipts = async (req, res) => {
+  try {
+    // get the user id from the request
+    const userId = req.user?.id || req.query.userId;
+
+    // Find all transactions for this user with type "expense" that have receiptId (or type "Receipt" if you have that)
+    const receiptsTransactions = await Transaction.find({
+      userId: userId,
+      receiptId: { $exists: true, $ne: null }, // Only get transactions that have receipt data
+    }).select("_id date description category amount name type receiptId");
+
+    if (!receiptsTransactions || receiptsTransactions.length === 0) {
+      return res.status(200).json({ receipts: [] });
+    }
+
+    res.status(200).json({ receipts: receiptsTransactions });
+  } catch (err) {
+    console.error("Error fetching receipts:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const getReceiptById = async (req, res) => {
+  try {
+    // user id from the jwt token
+    const userId = req.user?.id;
+    const receiptId = req.params.receiptId; // This is now the actual receipt ID
+
+    // First, verify the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the receipt directly by its ID
+    const receipt = await Receipt.findById(receiptId);
+    if (!receipt) {
+      return res.status(404).json({ message: "Receipt not found" });
+    }
+
+    // Verify this receipt belongs to the user by checking the userId in the receipt
+    if (receipt.userId && receipt.userId.toString() !== userId) {
+      return res.status(403).json({
+        message: "Receipt does not belong to this user",
+      });
+    }
+
+    // Find the associated transaction (if you still need transaction data)
+    const transaction = await Transaction.findOne({ receiptId: receiptId });
+
+    // Return receipt data (with transaction data if available)
+    return res.status(200).json({
+      receiptId: receipt._id,
+      date: receipt.date || (transaction && transaction.date),
+      merchant: receipt.merchant || "Unknown",
+      merchantAddress: receipt.merchantAddress,
+      items: receipt.items,
+      tax: receipt.tax,
+      amount: receipt.amount || (transaction && transaction.amount),
+      // Include these if transaction exists
+      ...(transaction && {
+        transactionId: transaction._id,
+        description: transaction.description,
+        category: transaction.category,
+        name: transaction.name || "Unnamed",
+      }),
+    });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({
       status: "Error",
       message: "Server error",
@@ -153,4 +231,6 @@ export default {
   getUser,
   getUserTransactions,
   getTransactionById,
+  getUserReceipts,
+  getReceiptById,
 };

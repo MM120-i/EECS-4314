@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const transactionSchema = new mongoose.Schema(
   {
     userId: {
@@ -34,6 +33,15 @@ const transactionSchema = new mongoose.Schema(
     amount: {
       type: Number,
       required: false,
+    },
+    name: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    type: {
+      type: String,
+      required: true,
     },
   },
   {
