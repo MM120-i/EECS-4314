@@ -8,7 +8,6 @@ import {
 import { getTransactions } from "@/app/data/transactions";
 
 export default async function TransactionsTable() {
-  // TODO: Need to get real data
   const transactions = (await getTransactions())?.data
 
   return (
@@ -21,15 +20,15 @@ export default async function TransactionsTable() {
                 <div className="flex items-center border-b pb-4 gap-5">
                   <div className="mb-2 flex items-center">
                     <p className="text-sm text-gray-500">{transaction.date}</p>
-                    <TransactionCategory category={transaction.category} />
                   </div>
                   <div className="flex w-full items-center justify-between pt-4">
                     <div>
-                      <p className="text-xl font-medium">
-                        {transaction.amount}
+                    <p className="text-md">{transaction.description}</p>
+                      <p className="text-md font-medium">
+                      {(transaction.amount).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}
                       </p>
-                      <p className="text-lg">{transaction.descrption}</p>
                     </div>
+                    <TransactionCategory category={transaction.category}/>
                     <div className="flex  gap-2">
                       <ViewTransaction id={transaction._id} />
                       <EditTransaction id={transaction._id} />
@@ -41,7 +40,7 @@ export default async function TransactionsTable() {
             ))}
           </div>
           <table className="hidden min-w-full text-grey-900 md:table">
-            <thead className="rounded-lg text-left text-sm font-normal">
+            <thead className="rounded-lg text-left text-lg font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                   Date
@@ -63,21 +62,21 @@ export default async function TransactionsTable() {
                   key={transaction._id}
                   className="w-full border-b py-3 text-lg last-of-type:border-none"
                 >
-                  <td className="whitespace-nowrap px-3 py-3">
+                  <td className="whitespace-nowrap px-3 py-3 text-sm">
                     {transaction.date}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {transaction.descrption}
+                  <td className="whitespace-nowrap px-3 py-3 text-sm">
+                    {transaction.description}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
+                  <td className="whitespace-nowrap px-3 py-3 text-sm">
                     <TransactionCategory category={transaction.category} />
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {transaction.amount}
+                  <td className="whitespace-nowrap px-3 py-3 text-sm ">
+                    {(transaction.amount).toLocaleString('en-US', {style: 'currency', currency: 'USD'})}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex justify-end gap-3">
-                      <ViewTransaction id={transaction._id} />
+                     { transaction?.type === "Receipt" && <ViewTransaction id={transaction._id} />}
                       <EditTransaction id={transaction._id} />
                       <DeleteTransaction id={transaction._id} />
                     </div>

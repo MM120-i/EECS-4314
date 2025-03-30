@@ -13,7 +13,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContentText from "@mui/material/DialogContentText";
 import TextField from "@mui/material/TextField";
 import { Button } from "../button";
-import { CloudArrowDownIcon } from "@heroicons/react/24/solid";
+import { CloudArrowDownIcon, PlusIcon } from "@heroicons/react/24/solid";
 import CircularProgress from "@mui/material/CircularProgress";
 import { log } from "console";
 
@@ -21,7 +21,7 @@ import { log } from "console";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
-export default function DragNDrop() {
+export default function UploadReceipt() {
 
 
     const [file, setFile] = useState<File | null>(null)
@@ -78,13 +78,12 @@ export default function DragNDrop() {
 
         try {
 
-            const res = await uploadReceipt(formData);
-            console.log("hell");    
+            const res = await uploadReceipt(formData); 
 
-            if (!response.ok) {
+            if (!res.ok) {
                 setStatus("error")
-                console.log("bit")
-                setError(response)
+                setError(res.data.message)
+                console.log("here")
             }
             else {
                 setFile(null)
@@ -113,10 +112,12 @@ export default function DragNDrop() {
     };
 
     return (
-        <div className="mt-10">
+        <div>
             <Button onClick={handleClickOpen}>
-                Upload Receipt
+                Scan Receipt
+                <PlusIcon className="h-5 md:ml-5"/>
             </Button>
+            
             <Dialog open={open} onClose={handleClose} >
                 <DialogTitle>Input a Receipt for processing</DialogTitle>
                 <DialogContent>

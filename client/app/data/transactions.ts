@@ -5,13 +5,15 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { Categories } from "../lib/categories";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const cats = Categories.map( cat => cat.label)
 
 const FormSchema = z.object({
     description: z.string().min(2, { message: "transaction name must be at least 2 characters long." }).trim(),
     amount: z.coerce.number().gt(0, { message: 'Please enter an amount greater than $0.' }),
-    category: z.enum(["Grocery", "idk", "option2"], {
+    category: z.enum(cats, {
       invalid_type_error: 'Please select an category type.',
     }),
     date: z.date({invalid_type_error: 'Please select a date'}),
@@ -24,14 +26,10 @@ export async function getTransactions() {
         const response = await axios.get(`${BACKEND_URL}/user/transactions`, {headers: {
         Authorization: `Bearer ${token}`, 
         }})
-
-        console.log({ok:true, data:response.data.transactions})
         return {ok:true, data:response.data.transactions}
     }
     catch(error){
-        console.log({ok:false, data: error})
-        // return {ok:false, data: error.response.data}
-        
+        return {ok:false, data: error.response.data}
     }
 }
 
@@ -61,7 +59,7 @@ export async function createTransaction(prevState: State, formData: FormData) {
     // Insert data into the database
     try {
         const token = (await cookies()).get("session")?.value;
-        const response = await axios.post(`${BACKEND_URL}/api/transactions/create`, {date, description, category, amount}, {headers: {
+        const response = await axios.post(`${BACKEND_URL}/transactions/create`, {date, description, category, amount}, {headers: {
             Authorization: `Bearer ${token}`, 
             }})
 
@@ -72,7 +70,24 @@ export async function createTransaction(prevState: State, formData: FormData) {
       };
     }
   
-    // Revalidate the cache for the invoices page and redirect the user.
     revalidatePath('/dashboard/transactions');
     redirect('/dashboard/transactions');
+}
+
+
+  export async function deleteTransaction(id: string){
+      try {
+        const token = (await cookies()).get("session")?.value;
+        const response = await axios.delete(`${BACKEND_URL}/transactions/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        })
+
+      } catch (error) {
+        return {
+          message: `${error}`,
+        };
+      }
+      revalidatePath('/dashboard/transactions');
   }

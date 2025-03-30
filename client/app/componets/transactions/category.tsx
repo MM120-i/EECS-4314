@@ -1,18 +1,11 @@
+import { Categories } from "@/app/lib/categories";
 import clsx from "clsx";
 
 export default function TransactionCategory({category} : {category: string}){
+
+    const color = Categories.find(cat => cat.label === category)?.color
     return(
-        <span className={clsx(`rounded-full px-2 py-1 text-xs`,
-            {
-                "bg-customred text-white" : category === 'Grocery',
-                "bg-orange text-white": category === "Dining",
-                "bg-customyellow text-black": category === "yellow",
-                "bg-customgreen text-white": category === "green",
-                "bg-blue text-white": category === "blue",
-                "bg-indigo text-white": category === "indigo",
-                "bg-violet text-white": category === "violet",
-            },
-        )}>
+        <span className={`rounded-full px-2 py-1 text-xstext-black`} style={{backgroundColor: color}}>
             {category}
         </span>
     )

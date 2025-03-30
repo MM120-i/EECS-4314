@@ -1,3 +1,7 @@
+'use client';
+
+import { deleteReceipt } from "@/app/data/receipts";
+import { deleteTransaction } from "@/app/data/transactions"
 import { TrashIcon,EyeIcon, PlusIcon, PencilIcon } from "@heroicons/react/24/outline"
 import Link from "next/link"
 
@@ -27,11 +31,11 @@ export function EditTransaction({ id }: { id: string }) {
 }
 
 export function DeleteTransaction({ id }: { id: string }) {
+    const DeleteTransactionWithId = deleteTransaction.bind(null,id)
     return (
-        <form action="">
-            <button type="submit" className="rounded-md border p-2 hover:bg-gray-100">
+        <form action={DeleteTransactionWithId}>
+            <button type="submit"  className="rounded-md border p-2 hover:bg-gray-100">
                 <TrashIcon className="w-5"/>
-
             </button>
         </form>
     )
@@ -45,5 +49,27 @@ export function ViewTransaction({ id }: { id: string }) {
         >
             <EyeIcon className="w-5"></EyeIcon>
         </Link>
+    )
+}
+
+export function EditReceipt({ id, transId }: { id: string, tranId: string }) {
+    return (
+        <Link
+            href={`/dashboard/transactions/${id}`}
+            className="rounded-md border p-2 hover:bg-gray-100"
+        >
+            <PencilIcon className="w-5"/>
+        </Link>
+    )
+}
+
+export function DeleteReceipt({ id, transId}: { id: string, transId: string }) {
+    const DeleteReceiptWithId = deleteReceipt.bind(null,id, transId)
+    return (
+        <form action={DeleteReceiptWithId}>
+            <button type="submit"  className="rounded-md border p-2 hover:bg-gray-100">
+                <TrashIcon className="w-5"/>
+            </button>
+        </form>
     )
 }
