@@ -1,17 +1,17 @@
 export const Categories = [
   { category: "Housing", label: "Housing", color: "#FF6347" },
   { category: "Utilities", label: "Utilities", color: "#4682B4" },
-  { category: "Food and Dining", label: "Food and Dining", color: "#FFD700" },
+  { category: "Food & Dining", label: "Food & Dining", color: "#FFD700" },
   { category: "Insurance", label: "Insurance", color: "#FF1493" },
   { category: "Healthcare", label: "Healthcare", color: "#8A2BE2" },
   { category: "Education", label: "Education", color: "#3CB371" },
   { category: "Grocery", label: "Groceries", color: "#DC143A" },
   {
     category: "Subscription",
-    label: "Subscriptions & Memberships",
+    label: "Subscription",
     color: "#6A5ACD",
   },
-  { category: "Debt Payment", label: "Debt Payments", color: "#A52A2A" },
+  { category: "Debt Payment", label: "Debt Payment", color: "#A52A2A" },
   {
     category: "Health and Fitness",
     label: "Health and Fitness",
