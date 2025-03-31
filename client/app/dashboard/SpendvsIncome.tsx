@@ -26,16 +26,16 @@ ChartJS.register(
 const SpendvsIncome = () => {
   const data = {
     //chart data
-    labels: ["January", "February", "March", "April", "May"], // x-axis labels
+    labels: ["January", "February", "March"], // x-axis labels
     datasets: [
       {
         label: "Spending",
-        data: [5500, 3600, 1700, 5000, 5650], // MOCK DATA
+        data: [5500, 3600, 4005, 5000, 5650], // MOCK DATA
         borderColor: "rgba(0, 149, 255, 1)",
       },
       {
         label: "Income",
-        data: [800, 850, 950, 1000, 1200],
+        data: [800, 2060, 950, 1000, 1200],
         borderColor: "rgba(7, 224, 152, 1)",
       },
     ],
