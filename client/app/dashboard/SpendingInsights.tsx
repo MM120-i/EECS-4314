@@ -25,7 +25,7 @@ ChartJS.register(
 const SpendvsIncome = () => {
   const data = {
     //chart data
-    labels: ["January", "February", "March", "April", "May"], // x-axis labels
+    labels: ["January", "February", "March"], // x-axis labels
     datasets: [
       {
         // TODO: Need to get real data

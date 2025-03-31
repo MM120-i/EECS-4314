@@ -36,9 +36,6 @@ const WeeklySpend = () => {
           <h2 className="text-xl font-bold text-gray-800">Weekly Spend</h2>
           <p className="text-gray-500 text-sm">Weekly Summary</p>
         </div>
-        <button className="border px-4 py-2 text-sm rounded-md shadow-sm">
-          Export
-        </button>
       </div>
       {/* Grid of Category Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
