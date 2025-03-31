@@ -136,6 +136,12 @@ router.get(
   transactionController.getCategoricalSpendings
 );
 
+router.get(
+  "/user/monthly-spendings",
+  authenticateToken,
+  userController.getMonthlySpendings
+);
+
 router.use(errorHandler);
 
 export default router;

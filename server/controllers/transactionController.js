@@ -127,10 +127,6 @@ export const importPlaidTransactions = async (req, res) => {
   try {
     const { userId, accessToken, accountId } = req.body;
 
-    console.log(userId);
-    console.log(accessToken);
-    console.log(accountId);
-
     const response = await plaidClient.transactionsGet({
       access_token: accessToken,
       start_date: "2024-01-01",

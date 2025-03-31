@@ -225,6 +225,89 @@ const getReceiptById = async (req, res) => {
   }
 };
 
+const getMonthlySpendings = async (req, res) => {
+  try {
+    // Get the user ID from the request
+    const userId = req.user?.id || req.query.userId;
+
+    if (!userId) {
+      return res.status(400).json({
+        status: "Error",
+        message: "User ID is required",
+      });
+    }
+
+    // Get all transactions for this user
+    const transactions = await Transaction.find({ userId: userId }).select(
+      "date amount"
+    );
+
+    if (!transactions || transactions.length === 0) {
+      return res.status(200).json({
+        status: "Success",
+        data: [],
+      });
+    }
+
+    // Create an object to store monthly totals
+    const monthlyTotals = {};
+
+    // Process each transaction
+    transactions.forEach((transaction) => {
+      const date = new Date(transaction.date);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; // JavaScript months are 0-indexed
+
+      // Create a key in format YYYY-MM
+      const monthKey = `${year}-${month.toString().padStart(2, "0")}`;
+
+      // Get the month name
+      const monthName = new Date(year, month - 1, 1).toLocaleString("default", {
+        month: "long",
+      });
+
+      // Convert amount to number and take absolute value to ensure positive
+      const amount = Math.abs(Number(transaction.amount));
+
+      // Initialize or add to the monthly total
+      if (!monthlyTotals[monthKey]) {
+        monthlyTotals[monthKey] = {
+          year,
+          month,
+          monthName,
+          totalSpending: 0,
+        };
+      }
+
+      monthlyTotals[monthKey].totalSpending += amount;
+    });
+
+    // Convert the object to an array and round the totals to 2 decimal places
+    const monthlySpendingsArray = Object.values(monthlyTotals).map((item) => ({
+      ...item,
+      totalSpending: parseFloat(item.totalSpending.toFixed(2)),
+    }));
+
+    // Sort by date (newest first)
+    monthlySpendingsArray.sort((a, b) => {
+      if (a.year !== b.year) return b.year - a.year;
+      return b.month - a.month;
+    });
+
+    res.status(200).json({
+      status: "Success",
+      data: monthlySpendingsArray,
+    });
+  } catch (err) {
+    console.error("Error aggregating monthly spendings:", err);
+    res.status(500).json({
+      status: "Error",
+      message: "Failed to aggregate monthly spendings",
+      error: err.message,
+    });
+  }
+};
+
 export default {
   getUserById,
   getUser,
@@ -232,4 +315,5 @@ export default {
   getTransactionById,
   getUserReceipts,
   getReceiptById,
+  getMonthlySpendings,
 };
