@@ -20,7 +20,7 @@ export default async function TransactionsTable() {
               <div key={transaction._id} className="mb-1 w-full rounded-xl p-4">
                 <div className="flex items-center border-b pb-4 gap-5">
                   <div className="mb-2 flex items-center">
-                    <p className="text-sm text-gray-500">{transaction.date}</p>
+                    <p className="text-sm text-gray-500">{new Date(transaction.date).toLocaleDateString("en-US", {year: "numeric", month: "short", day: "numeric",})}</p>
                   </div>
                   <div className="flex w-full items-center justify-between pt-4">
                     <div>
@@ -63,7 +63,11 @@ export default async function TransactionsTable() {
                   className="w-full border-b py-3 text-lg last-of-type:border-none"
                 >
                   <td className="whitespace-nowrap px-3 py-3 text-sm">
-                    {transaction.date}
+                    {new Date(transaction.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3 text-sm">
                     {transaction.description}

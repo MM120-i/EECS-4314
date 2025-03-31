@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 
 import authenticateToken from "../middleware/auth/jwt.js";
 import transactionController from "../controllers/transactionController.js";
+import { importPlaidTransactions } from "../controllers/transactionController.js";
 
 dotenv.config();
 
@@ -62,6 +63,12 @@ router.delete(
   "/:transactionId",
   authenticateToken,
   transactionController.deleteTransaction
+);
+
+router.post(
+  "/plaid/import",
+  authenticateToken,
+  importPlaidTransactions
 );
 
 export default router;

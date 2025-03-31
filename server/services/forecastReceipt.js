@@ -94,7 +94,7 @@ export async function EMA_forecastCategorical(categoricalData, alpha = 0.3) {
 
     // now we gotta calculate the EMA for all the months
     for (let i = 1; i < amount.length; i++) {
-      EMA = amount[i] * alpha + EMA * (1 - alpha);
+      EMA = Math.abs(amount[i]) * alpha + EMA * (1 - alpha);
     }
 
     forecastData.push({

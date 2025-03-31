@@ -1,5 +1,6 @@
 import Receipt from "../models/Receipt.js";
 import Transaction from "../models/Transaction.js";
+import plaidClient from "../services/plaid.js";
 
 import User from "../models/User.js";
 
@@ -117,6 +118,57 @@ const deleteTransaction = async (req, res) => {
     res.status(500).json({
       status: "Error",
       message: "Failed to delete transaction",
+      error: err.message,
+    });
+  }
+};
+
+export const importPlaidTransactions = async (req, res) => {
+  try {
+    const { userId, accessToken, accountId } = req.body;
+
+    const response = await plaidClient.transactionsGet({
+      access_token: accessToken,
+      start_date: "2024-01-01",
+      end_date: "2025-04-01",
+      options: {
+        count: 10,
+        account_ids: [accountId],
+      },
+    });
+
+    const transactions = response.data.transactions.slice(0, 10);
+    const saved = [];
+
+    for (const tx of transactions) {
+      const transaction = new Transaction({
+        userId,
+        date: tx.date,
+        description: tx.name || "No description",
+        category: tx.category?.[0] || "Uncategorized",
+        amount: tx.amount.toFixed(2),
+        name: tx.merchant_name || tx.name || "Unnamed",
+        type: "standalone",
+      });
+
+      const savedTx = await transaction.save();
+
+      await User.findByIdAndUpdate(userId, {
+        $push: { transactions: savedTx._id },
+      });
+
+      saved.push(savedTx);
+    }
+    res.status(201).json({
+      status: "Success",
+      message: "Imported Plaid transactions",
+      data: saved,
+    });
+  } catch (err) {
+    console.error("Error importing Plaid transactions:", err);
+    res.status(500).json({
+      status: "Error",
+      message: "Failed to import Plaid transactions",
       error: err.message,
     });
   }
