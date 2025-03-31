@@ -26,10 +26,13 @@ export default function Page() {
           <SpendvsIncome />
         </div>
 
-        <div className="w-full sm:w-[400px] md:w-[600px] lg:w-[700px]">
-          <MostDrainingSpends />
-          <ForecastDisplay />
-          {/* area analytics goes here */}
+        <div className="flex flex-wrap gap-4 w-full">
+          <div className="w-full sm:w-[400px] md:w-[600px] lg:w-[750px]">
+            <MostDrainingSpends />
+          </div>
+          <div className="w-full sm:w-[400px] md:w-[600px] lg:w-[776px]">
+            <ForecastDisplay />
+          </div>
         </div>
       </div>
     </main>

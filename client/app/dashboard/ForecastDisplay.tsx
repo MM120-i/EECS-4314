@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { getForecast } from "@/app/data/transactions";
 
 const ForecastDisplay = () => {
-  const [forecastData, setForecastData] = useState([]);
+  interface ForecastItem {
+    category: string;
+    forecast: string;
+  }
+
+  const [forecastData, setForecastData] = useState<ForecastItem[]>([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -28,7 +33,7 @@ const ForecastDisplay = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg h-[350px] w-full max-w-[650px] flex flex-col">
+    <div className="p-6 bg-white shadow-md rounded-lg h-[386px] w-full max-w-[800px] flex flex-col">
       <div className="flex items-start">
         <h2 className="text-xl font-bold text-gray-800">
           Forecast for Next Month
