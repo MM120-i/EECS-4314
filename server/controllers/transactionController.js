@@ -38,7 +38,7 @@ const createTransaction = async (req, res) => {
       date: date || Date.now(),
       description: description || "No description",
       category: category || "Uncategorized",
-      amount: amount || "0.00",
+      amount: Math.abs(amount).toFixed(2) || "0.00",
       name: name || "Unnamed",
       type: "standalone",
     });
@@ -127,6 +127,10 @@ export const importPlaidTransactions = async (req, res) => {
   try {
     const { userId, accessToken, accountId } = req.body;
 
+    console.log(userId);
+    console.log(accessToken);
+    console.log(accountId);
+
     const response = await plaidClient.transactionsGet({
       access_token: accessToken,
       start_date: "2024-01-01",
@@ -146,7 +150,7 @@ export const importPlaidTransactions = async (req, res) => {
         date: tx.date,
         description: tx.name || "No description",
         category: tx.category?.[0] || "Uncategorized",
-        amount: tx.amount.toFixed(2),
+        amount: Math.abs(tx.amount).toFixed(2),
         name: tx.merchant_name || tx.name || "Unnamed",
         type: "standalone",
       });
