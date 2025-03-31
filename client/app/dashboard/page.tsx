@@ -27,9 +27,9 @@ export default function Page() {
         </div>
 
         <div className="flex flex-wrap gap-4 w-full">
-          <div className="w-full sm:w-[400px] md:w-[600px] lg:w-[750px]">
+          {/* <div className="w-full sm:w-[400px] md:w-[600px] lg:w-[750px]">
             <MostDrainingSpends />
-          </div>
+          </div> */}
           <div className="w-full sm:w-[400px] md:w-[600px] lg:w-[776px]">
             <ForecastDisplay />
           </div>

@@ -1,27 +1,26 @@
 {
-    "totalSpent": {
-      "amount": "$1.7k",
-      "comment": "YU need help.",
-      "icon": "📊",
-      "bgColor": "bg-red-100"
-    },
-    "groceries": {
-      "amount": "$530",
-      "comment": "+5% from last week",
-      "icon": "🛒",
-      "bgColor": "bg-yellow-100"
-    },
-    "eatingOut": {
-      "amount": "$200",
-      "comment": "Start cooking lazy bi",
-      "icon": "🥗",
-      "bgColor": "bg-green-100"
-    },
-    "entertainment": {
-      "amount": "$300",
-      "comment": "+9.5% from last week",
-      "icon": "🎭",
-      "bgColor": "bg-purple-100"
-    }
+  "totalSpent": {
+    "amount": "$1.7k",
+    "comment": "",
+    "icon": "📊",
+    "bgColor": "bg-red-100"
+  },
+  "groceries": {
+    "amount": "$425.95",
+    "comment": "",
+    "icon": "🛒",
+    "bgColor": "bg-yellow-100"
+  },
+  "eatingOut": {
+    "amount": "$239.79",
+    "comment": "",
+    "icon": "🥗",
+    "bgColor": "bg-green-100"
+  },
+  "travel": {
+    "amount": "$1034.26",
+    "comment": "",
+    "icon": "✈️",
+    "bgColor": "bg-purple-100"
   }
-  
+}

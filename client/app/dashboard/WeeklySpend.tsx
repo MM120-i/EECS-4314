@@ -21,8 +21,8 @@ const WeeklySpend = () => {
     { id: "groceries", label: "On Groceries", bgColor: "bg-yellow-100" },
     { id: "eatingOut", label: "Times Eaten Out", bgColor: "bg-green-100" },
     {
-      id: "entertainment",
-      label: "On Entertainment",
+      id: "travel",
+      label: "Travel",
       bgColor: "bg-purple-100",
     },
   ];
