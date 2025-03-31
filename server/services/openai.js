@@ -11,7 +11,7 @@ const openai = new OpenAI({
 const CATEGORIES = [
   "Housing",
   "Utilities",
-  "Food & Dining",
+  "Food and Drinks",
   "Insurance",
   "Healthcare",
   "Education",
