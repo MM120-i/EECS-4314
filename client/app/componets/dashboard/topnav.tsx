@@ -23,7 +23,7 @@ export default function TopNav({
             <span className="text-black text-md">Welcome, {name}!</span>
             <img
               className="w-10 h-10 rounded-full"
-              src={profilePic || "/profile.gif"}
+              src={profilePic || "./profile.gif"}
               alt="user photo"
             />
           </Link>

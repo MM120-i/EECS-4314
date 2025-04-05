@@ -5,6 +5,7 @@ YUNeedMoney is a **finance management web application** designed to help users *
 ---
 
 ## **Features**
+
 - **User Authentication** – Secure registration & login using **JWT**.
 - **Transaction Tracking** – Users can:
   - Manually add expenses/income.
@@ -18,45 +19,54 @@ YUNeedMoney is a **finance management web application** designed to help users *
 ---
 
 ## **Tech Stack**
-### **Frontend**  
-- **Next.js (React framework)** – UI & routing  
-- **Tailwind CSS** – Styling  
-- **shadcn/ui** – UI components  
 
-### **Backend**  
-- **Node.js & Express** – API server  
-- **MongoDB (Mongoose)** – Database  
-- **JWT** – Secure user authentication  
-- **Plaid API** – Dummy banking integration  
+### **Frontend**
+
+- **Next.js (React framework)** – UI & routing
+- **Tailwind CSS** – Styling
+- **shadcn/ui** – UI components
+
+### **Backend**
+
+- **Node.js & Express** – API server
+- **MongoDB (Mongoose)** – Database
+- **JWT** – Secure user authentication
+- **Plaid API** – Dummy banking integration
 - **Taggun API** – Receipt scanning
 - **Open API**
 
 ### **Deployment & Hosting**
-- **AWS (EC2 & RDS)** – Cloud deployment  
+
+- **AWS (EC2 & RDS)** – Cloud deployment
 
 ---
 
 ## **Getting Started**
+
 ### **1️. Clone the Repository**
+
 ```sh
 git clone https://github.com/MM120-i/EECS-4314.git
 cd EECS-4314
 ```
+
 ### **2. Set up the Backend**
+
 ```sh
 cd server
 npm install
 ```
+
 Start backend
+
 ```sh
 npm run dev
 ```
+
 ### **3. Set up the Frontend**
+
 ```sh
 cd client
 npm install
 npm run dev
 ```
-
-### **Project Status: Under Development**
-This project is **still in progress** and **not yet complete**. Some features may be missing or not fully functional, u know what I mean?
