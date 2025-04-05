@@ -68,7 +68,9 @@ export default function UploadReceipt() {
   }
 
   async function handleFileUpload() {
-    if (!file) return;
+    if (!file) {
+      return;
+    }
     setStatus("uploading");
 
     const formData = new FormData();
