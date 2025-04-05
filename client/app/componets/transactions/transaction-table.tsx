@@ -8,6 +8,15 @@ import {
 } from "@/app/componets/transactions/buttons";
 import { getTransactions } from "@/app/data/transactions";
 
+interface Transaction {
+  _id: string;
+  date: string;
+  description: string;
+  category: string;
+  amount: number;
+  type: string;
+}
+
 export default async function TransactionsTable() {
   const transactions = (await getTransactions())?.data;
 
@@ -16,11 +25,17 @@ export default async function TransactionsTable() {
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-grey-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {transactions?.map((transaction) => (
+            {transactions?.map((transaction: Transaction) => (
               <div key={transaction._id} className="mb-1 w-full rounded-xl p-4">
                 <div className="flex items-center border-b pb-4 gap-5">
                   <div className="mb-2 flex items-center">
-                    <p className="text-sm text-gray-500">{new Date(transaction.date).toLocaleDateString("en-US", {year: "numeric", month: "short", day: "numeric",})}</p>
+                    <p className="text-sm text-gray-500">
+                      {new Date(transaction.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
                   </div>
                   <div className="flex w-full items-center justify-between pt-4">
                     <div>
@@ -57,7 +72,7 @@ export default async function TransactionsTable() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {transactions?.map((transaction) => (
+              {transactions?.map((transaction: Transaction) => (
                 <tr
                   key={transaction._id}
                   className="w-full border-b py-3 text-lg last-of-type:border-none"
