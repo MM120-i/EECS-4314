@@ -6,16 +6,27 @@ import {
 } from "@/app/componets/transactions/buttons";
 import { getReceipt } from "@/app/data/receipts";
 
-export default async function ReceiptsTable({id} : {id: String}) {
+interface Receipt {
+  _id: string;
+  date: string;
+  amount: string;
+  descrption: string;
+  name: string;
+  price: string;
+  quantity: string;
+  totalPrice: string;
+}
+
+export default async function ReceiptsTable({ id }: { id: string }) {
   // Initialized
-  const receipt = (await getReceipt(id))?.data
+  const receipt = (await getReceipt(id))?.data;
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-grey-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {receipt?.map((receipt) => (
+            {receipt?.map((receipt: Receipt) => (
               <div key={receipt._id} className="mb-1 w-full rounded-xl p-4">
                 <div className="flex items-center border-b pb-4 gap-5">
                   <div className="mb-2 flex items-center">
@@ -27,7 +38,7 @@ export default async function ReceiptsTable({id} : {id: String}) {
                       <p className="text-lg">{receipt.descrption}</p>
                     </div>
                     <div className="flex  gap-2">
-                      <EditReceipt transId= {id} id={receipt._id} />
+                      <EditReceipt transId={id} id={receipt._id} />
                       <DeleteReceipt id={receipt._id} />
                     </div>
                   </div>
@@ -53,13 +64,13 @@ export default async function ReceiptsTable({id} : {id: String}) {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {receipt?.map((receipt) => (
+              {receipt?.map((receipt: Receipt) => (
                 <tr
                   key={receipt._id}
                   className="w-full border-b py-3 text-lg last-of-type:border-none "
                 >
-                  <td className="whitespace-nowrap px-4 py-3">~
-                    {receipt.name}
+                  <td className="whitespace-nowrap px-4 py-3">
+                    ~{receipt.name}
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
                     {receipt.price}
@@ -72,8 +83,8 @@ export default async function ReceiptsTable({id} : {id: String}) {
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
                     <div className="flex justify-end gap-3">
-                    <EditReceipt transId= {id} id={receipt._id} />
-                    <DeleteReceipt id={receipt._id} />
+                      <EditReceipt transId={id} id={receipt._id} />
+                      <DeleteReceipt id={receipt._id} />
                     </div>
                   </td>
                 </tr>
