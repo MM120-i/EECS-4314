@@ -8,7 +8,7 @@ import { z } from "zod";
 import { Categories } from "../lib/categories";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-const cats = Categories.map((cat) => cat.label);
+const cats = Categories.map((cat) => cat.label) as [string, ...string[]];
 
 const FormSchema = z.object({
   description: z
@@ -34,14 +34,25 @@ export async function getTransactions() {
     });
     return { ok: true, data: response.data.transactions };
   } catch (error) {
-    return { ok: false, data: error.response.data };
+    if (axios.isAxiosError(error) && error.response) {
+      return { ok: false, data: error.response.data };
+    }
+    return { ok: false, data: "An unknown error occurred." };
   }
 }
+
+// Define or import the State type
+type State = {
+  // Add appropriate fields for the State type
+  transactions: Array<any>;
+};
 
 export async function createTransaction(prevState: State, formData: FormData) {
   // Validate form fields using Zod
   const validatedFields = FormSchema.safeParse({
-    date: new Date(formData.get("date")),
+    date: formData.get("date")
+      ? new Date(formData.get("date") as string)
+      : null,
     description: formData.get("name"),
     category: formData.get("category"),
     amount: formData.get("amount"),
