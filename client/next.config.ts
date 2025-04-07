@@ -2,9 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: "standalone",
-  basePath: "/EECS-4314",
-  assetPrefix: "/EECS-4314/",
   images: {
     unoptimized: true,
   },
