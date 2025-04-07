@@ -9,14 +9,12 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
-import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
 import { signUp } from '../auth/actions';
 import Link from 'next/link';
 
 export default function RegisterForm() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  const callbackUrl = '/dashboard';
   const [errorMessage, formAction, isPending] = useActionState(signUp,undefined);
   return (
     <>

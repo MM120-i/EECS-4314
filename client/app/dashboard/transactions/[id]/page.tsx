@@ -1,3 +1,4 @@
+
 import DragNDrop from "@/app/componets/transactions/uploadReceipt";
 import ReceiptsTable from "@/app/componets/transactions/receipts-table";
 

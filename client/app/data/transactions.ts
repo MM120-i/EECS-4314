@@ -47,7 +47,7 @@ type State = {
   transactions: Array<any>;
 };
 
-export async function createTransaction(prevState: State, formData: FormData) {
+export async function createTransaction(prevState: any, formData: FormData) {
   // Validate form fields using Zod
   const validatedFields = FormSchema.safeParse({
     date: formData.get("date")
