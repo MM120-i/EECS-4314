@@ -10,12 +10,17 @@ const publicRoutes = ['/', '/signup', '/login']
 
 
 export default async function middleware(request: NextRequest) {
+  
+
+
     const protectedRoutes = ['/dashboard']
     const currentPath = request.nextUrl.pathname
     const isProtectedRoute = protectedRoutes.includes(currentPath)
 
     const cookie = (await cookies()).get('session')?.value
-    const session = await verifySession();
+    const session = request.cookies.get("session")
+    console.log(session);
+    
 
     if(isProtectedRoute || currentPath.startsWith('/dashboard')){
         //check for valid session 
@@ -28,7 +33,7 @@ export default async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/dashboard', request.nextUrl))
     }
     
-    return NextResponse.next()
+    return NextResponse.next();
 }
 
 //Routes Middleware should only run on /dashboard paths 
